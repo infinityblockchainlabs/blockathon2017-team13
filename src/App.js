@@ -4,7 +4,7 @@ import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 import { NavBar, Icon } from 'antd-mobile'
 
 // UI Components
-import LogoutButtonContainer from './user/ui/logoutbutton/LogoutButtonContainer'
+import LogoutButtonContainer from './ui/logoutbutton/LogoutButtonContainer'
 
 // Styles
 import 'antd-mobile/dist/antd-mobile.css'
@@ -16,25 +16,25 @@ import './App.css'
 
 class App extends Component {
   render() {
-    const OnlyAuthLinks = VisibleOnlyAuth(() =>
-      <span>
-        <li className="pure-menu-item">
-          <Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
-        </li>
-        <LogoutButtonContainer />
-      </span>
-    )
+    // const OnlyAuthLinks = VisibleOnlyAuth(() =>
+    //   <span>
+    //     <li className="pure-menu-item">
+    //       <Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
+    //     </li>
+    //     <LogoutButtonContainer />
+    //   </span>
+    // )
 
-    const OnlyGuestLinks = HiddenOnlyAuth(() =>
-      <span>
-        <li className="pure-menu-item">
-          <Link to="/signup" className="pure-menu-link">Sign Up</Link>
-        </li>
-        <li className="pure-menu-item">
-          <Link to="/login" className="pure-menu-link">Login</Link>
-        </li>
-      </span>
-    )
+    // const OnlyGuestLinks = HiddenOnlyAuth(() =>
+    //   <span>
+    //     <li className="pure-menu-item">
+    //       <Link to="/signup" className="pure-menu-link">Sign Up</Link>
+    //     </li>
+    //     <li className="pure-menu-item">
+    //       <Link to="/login" className="pure-menu-link">Login</Link>
+    //     </li>
+    //   </span>
+    // )
 
     return (
       <div>

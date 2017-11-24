@@ -1,8 +1,8 @@
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
-import CryptoLicenseToken from '../../../../build/contracts/CryptoLicenseToken.json'
+import AuthenticationContract from '../../../build/contracts/Authentication.json'
+import CryptoLicenseToken from '../../../build/contracts/CryptoLicenseToken.json'
 import { getEtherBalance } from '../profileform/ProfileFormActions'
 import { browserHistory } from 'react-router'
-import store from '../../../store'
+import store from '../../store'
 
 const contract = require('truffle-contract')
 
@@ -86,7 +86,7 @@ export function loginUser(coinbase) {
                 return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
             }
             dispatch(setLoaderStatus(true))
-            browserHistory.push('/dashboard')
+            browserHistory.push('/app')
         } catch(err) {
             dispatch(setLoaderStatus(true))
             dispatch(setErrorMessage(err.message))

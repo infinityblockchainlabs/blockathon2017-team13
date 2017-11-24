@@ -1,13 +1,12 @@
-import CryptoLicenseToken from '../../../../build/contracts/CryptoLicenseToken.json'
-import store from '../../../store'
+import CryptoLicenseToken from '../../../build/contracts/CryptoLicenseToken.json'
+import store from '../../store'
 import { loginUser, setErrorMessage, setInfoMessage, unlockAccount, setLoaderStatus } from '../loginform/LoginFormActions'
 
 const contract = require('truffle-contract')
 
-export function transferTo(receiver, amount, passPhrase) {
+export function sellToken(amount, passPhrase) {
     let web3 = store.getState().web3.web3Instance
     const coinbase = store.getState().user.data.coinbase
-    // Double-check web3's status.
     if (typeof web3 !== 'undefined') {
         return (async (dispatch) => {
             try {
@@ -17,9 +16,9 @@ export function transferTo(receiver, amount, passPhrase) {
                 licenseContract.setProvider(web3.currentProvider)
                 const licenseContractInstance = await licenseContract.deployed()
                 await unlockAccount(coinbase, passPhrase)
-                await licenseContractInstance.transferToken(receiver, amount, { from: coinbase })
+                await licenseContractInstance.sell(amount, { from: coinbase })
                 dispatch(loginUser(coinbase))
-                dispatch(setInfoMessage('Successfully transferred!!!'))
+                dispatch(setInfoMessage('Successfully sold!!!'))
             } catch (err) {
                 dispatch(setLoaderStatus(true))
                 dispatch(setErrorMessage(err.message))

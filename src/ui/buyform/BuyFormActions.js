@@ -1,10 +1,10 @@
-import CryptoLicenseToken from '../../../../build/contracts/CryptoLicenseToken.json'
-import store from '../../../store'
+import CryptoLicenseToken from '../../../build/contracts/CryptoLicenseToken.json'
+import store from '../../store'
 import { loginUser, setErrorMessage, setInfoMessage, unlockAccount, setLoaderStatus } from '../loginform/LoginFormActions'
 
 const contract = require('truffle-contract')
 
-export function sellToken(amount, passPhrase) {
+export function buyToken(amount, passPhrase) {
     let web3 = store.getState().web3.web3Instance
     const coinbase = store.getState().user.data.coinbase
     if (typeof web3 !== 'undefined') {
@@ -16,12 +16,13 @@ export function sellToken(amount, passPhrase) {
                 licenseContract.setProvider(web3.currentProvider)
                 const licenseContractInstance = await licenseContract.deployed()
                 await unlockAccount(coinbase, passPhrase)
-                await licenseContractInstance.sell(amount, { from: coinbase })
+                await licenseContractInstance.buy({ from: coinbase, value: web3.toWei(amount, 'ether') })
                 dispatch(loginUser(coinbase))
-                dispatch(setInfoMessage('Successfully sold!!!'))
-            } catch (err) {
+                dispatch(setInfoMessage('Successfully purchased!!!'))
                 dispatch(setLoaderStatus(true))
+            } catch (err) {
                 dispatch(setErrorMessage(err.message))
+                dispatch(setLoaderStatus(true))
             }
         })
     } else {

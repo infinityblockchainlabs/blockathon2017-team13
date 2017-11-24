@@ -1,6 +1,6 @@
-import AuthenticationContract from '../../../../build/contracts/Authentication.json'
+import AuthenticationContract from '../../../build/contracts/Authentication.json'
 import { loginUser, setErrorMessage, unlockAccount, setLoaderStatus } from '../loginform/LoginFormActions'
-import store from '../../../store'
+import store from '../../store'
 
 const contract = require('truffle-contract')
 
