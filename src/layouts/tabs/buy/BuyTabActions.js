@@ -27,8 +27,7 @@ export function getBuyList() {
                 const offers = await Promise.all(offerIds.split(',').map(offerId =>
                     contractInstance.getOffer(offerId)
                 ))
-                console.log(offerIds, offers, '@@@@@@@@@@@')
-                dispatch(getBuyListSuccess(offers.map(([name, fromCode,,amount, fromUrl,,fromAmount], id) => ({
+                dispatch(getBuyListSuccess(offers.map(([id, name, fromCode, amount, fromUrl, fromAmount]) => ({
                     id,
                     username: web3.toUtf8(name),
                     merchant_icon: fromUrl,
@@ -37,7 +36,7 @@ export function getBuyList() {
                     buy_total_price: fromAmount.c[0]
                 }))))
             } catch (err) {
-                console.log(err, '@@@@@@')
+                console.log(err)
                 dispatch(setErrorMessage(err.message))
             }
         })
