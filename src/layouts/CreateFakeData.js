@@ -14,13 +14,9 @@ import {
 const createFakeData = async () => {
   try {
       let web3 = store.getState().web3.web3Instance
-      console.log('start')
       const infiniteContract = contract(InfinitePointsContract)
-      console.log('kkkkkkkk')
       infiniteContract.setProvider(web3.currentProvider)
-      console.log('uuuuuuu')
       const contractInstance = await infiniteContract.deployed()
-      console.log('end')
 
       await contractInstance.signup('Weup', ZERO_ACCOUNT, true, 1, 'WEUP', 'https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png', { from: ZERO_ACCOUNT, gas: 1000000 })
       await contractInstance.signup('Alice', user1, false, 0, 'null', 'null', { from: ZERO_ACCOUNT, gas: 1000000 })
