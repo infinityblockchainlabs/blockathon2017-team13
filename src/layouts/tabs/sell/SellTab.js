@@ -14,7 +14,6 @@ class SellTab extends Component {
 
   render() {
     const { sellList } = this.props.exchange
-    const { wecoinBalance } = this.props.user
     
     return(
       <div>
