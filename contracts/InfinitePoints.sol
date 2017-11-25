@@ -178,7 +178,7 @@ contract InfinitePoints {
         return accounts[id].isMerchant;
     }
 
-    function setOffer (string transactionId, bytes32 typ, address from, address to, uint256 amount) public {
+    function setOffer (string offerId, bytes32 typ, address from, address to, uint256 amount) public {
       require(typ == "buy" || typ == "sell");
       Offer offer;
       offer.typ = typ;
@@ -190,12 +190,12 @@ contract InfinitePoints {
       } else {
           offer.buyer = msg.sender;
       }
-      offers[transactionId] = offer;
-      offerList.push(transactionId);
+      offers[offerId] = offer;
+      offerList.push(offerId);
     }
 
-    function getOffer (string transactionId) constant public returns (string, string, string, string) {
-      Offer offer = offers[transactionId];
+    function getOffer (string offerId) constant public returns (string, string, string, string) {
+      Offer offer = offers[offerId];
       return (toString(offer.seller), toString(offer.buyer), toString(offer.from), toString(offer.to));
     }
 
