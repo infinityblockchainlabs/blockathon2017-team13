@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { withCookies } from 'react-cookie'
 
 import SellTab from './SellTab'
-import { getSellList } from './SellTabActions'
+import { getSellList, sellOffer } from './SellTabActions'
 
 const mapStateToProps = (state) => {
   return {
@@ -11,9 +11,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getSellList: () => { dispatch(getSellList()) }
+    getSellList: () => { dispatch(getSellList()) },
+    sellOffer: (offerId) => dispatch(sellOffer(offerId))
   }
 }
 

@@ -1,6 +1,6 @@
 import InfinitePointsContract from '../../../../build/contracts/InfinitePoints.json'
 import store from '../../../store'
-import { setErrorMessage } from '../../../ui/loginform/LoginFormActions'
+import { setErrorMessage, refreshAccount } from '../../../ui/loginform/LoginFormActions'
 import contract from 'truffle-contract'
 
 export const EXCHANGE_GOT_SELL_LIST = 'EXCHANGE_GOT_SELL_LIST'
@@ -33,6 +33,28 @@ export function getSellList() {
                     sell_amount: amount.c[0],
                     sell_total_price: fromAmount.c[0]
                 }))))
+            } catch (err) {
+                console.log(err)
+                dispatch(setErrorMessage(err.message))
+            }
+        })
+    } else {
+        console.error('Web3 is not initialized.');
+    }
+}
+
+export function sellOffer(offerId) {
+    let web3 = store.getState().web3.web3Instance
+    if (typeof web3 !== 'undefined') {
+        return (async (dispatch, getState) => {
+            try {
+                const { user: { data: { coinbase } } } = getState()
+                const infiniteContract = contract(InfinitePointsContract)
+                infiniteContract.setProvider(web3.currentProvider)
+                const contractInstance = await infiniteContract.deployed()
+                await contractInstance.convertPoint(offerId, { from: coinbase }),
+                dispatch(refreshAccount(coinbase))
+                dispatch(getSellList())
             } catch (err) {
                 console.log(err)
                 dispatch(setErrorMessage(err.message))

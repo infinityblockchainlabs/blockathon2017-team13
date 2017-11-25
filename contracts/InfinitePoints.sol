@@ -127,7 +127,7 @@ contract InfinitePoints {
         return points[merchant][msg.sender] * rate;
     }
 
-    function exchangePointToWCoin (address customer, address merchant, uint256 amount) internal {
+    function exchangePointToWCoin (address customer, address merchant, uint256 amount) public {
         require(isMerchant(merchant)); // 
         require(!isMerchant(customer)); // only customer can exchange points to wcoins
         require(points[merchant][customer] > 0);
@@ -139,7 +139,7 @@ contract InfinitePoints {
         wcoins[customer] += amount * rate;
     }
 
-    function exchangeWCoinToPoint (address customer, address merchant, uint256 amount) internal {
+    function exchangeWCoinToPoint (address customer, address merchant, uint256 amount) public {
         require(isMerchant(merchant)); // 
         require(!isMerchant(customer)); // only customer can exchange wcoins to points
         require(points[merchant][customer] > 0);
@@ -230,7 +230,7 @@ contract InfinitePoints {
         Offer memory offer = offers[offerId];
 
         if (offer.typ == "sell") { // sender buy
-            exchangeWCoinToPoint(msg.sender, offer.from, offer.amount);
+            exchangeWCoinToPoint(msg.sender, offer.to, offer.amount);
         } else { // sender sell
             exchangePointToWCoin(msg.sender, offer.from, offer.amount);
         }

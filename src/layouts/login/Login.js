@@ -19,7 +19,7 @@ class Login extends Component {
         <WingBlank>
           <LoginFormContainer />
           <WhiteSpace />
-          <p style={{ fontSize: "0.9em", color: "#ccc", textAlign: "center" }}>
+          <p style={{ color: "#ccc", textAlign: "center" }}>
             Demo Account 1: demo1 / demo<br/>
             Demo Account 2: demo2 / demo<br/>
           </p>

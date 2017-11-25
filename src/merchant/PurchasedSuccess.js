@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
 import {Card, Row, Col, Icon} from 'antd'
+import { connect } from 'react-redux'
+import store from '../store'
+import { browserHistory } from 'react-router'
+import contract from 'truffle-contract'
+import InfinitePointsContract from '../../build/contracts/InfinitePoints.json'
 
 class PurchasedSuccess extends Component {
+  componentDidMount() {
+    setTimeout(() => this.props.purchase(), 500)
+  }
+
   render() {
     return (
       <div style={{background: '#ECECEC', padding: '30px'}}>
@@ -14,7 +23,8 @@ class PurchasedSuccess extends Component {
                 <br/>
                 <br/>
                 <p>Thank you for shopping with us.</p>
-                <p>You have been rewarded 3000 points.</p>
+                <h2>You have been rewarded <strong>3000 points.</strong></h2>
+                <p>Please login to <a href="/app">WeUP app</a> to check your rewards</p>
               </div>
             </Col>
             <Col md={8} sm={24} style={{marginTop: 16}}></Col>
@@ -25,4 +35,36 @@ class PurchasedSuccess extends Component {
   }
 }
 
-export default PurchasedSuccess
+const mapStateToProps = (state) => {
+  return state
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    purchase: () => {
+      let web3 = store.getState().web3.web3Instance
+      if (typeof web3 !== 'undefined') {
+        return (async (dispatch, getState) => {
+          const infiniteContract = contract(InfinitePointsContract)
+          infiniteContract.setProvider(web3.currentProvider)
+          const contractInstance = await infiniteContract.deployed()
+          const accounts = web3.eth.accounts
+
+          await contractInstance.addPoints(accounts[1], 3000)
+
+          browserHistory.push('/merchants/purchased')
+        })
+      } else {
+        console.error('Web3 is not initialized.');
+      }
+    }
+  }
+}
+
+const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PurchasedSuccess)
+
+
+export default Container

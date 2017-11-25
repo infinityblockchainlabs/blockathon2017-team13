@@ -22,7 +22,6 @@ export function getMerchants() {
               const infiniteContract = contract(InfinitePointsContract)
               infiniteContract.setProvider(web3.currentProvider)
               const contractInstance = await infiniteContract.deployed()
-              console.log(coinbase)
               const merChantIds = await contractInstance.getMerchants({ from: coinbase })
               const merchants = await Promise.all(merChantIds.split(',').map(merchant =>
                   contractInstance.getMerchantPoints(merchant, coinbase)
@@ -56,7 +55,6 @@ export function getAccountInfo() {
               const infiniteContract = contract(InfinitePointsContract)
               infiniteContract.setProvider(web3.currentProvider)
               const contractInstance = await infiniteContract.deployed()
-              console.log(coinbase)
               const accountInfo = await contractInstance.getAccountInfo({ from: coinbase })
               const [name, rate, isMerChant, code, url, wCoinBalance] = accountInfo
               
