@@ -30,10 +30,18 @@ const createFakeData = async () => {
       console.log('Merchant 1: ', merchant1)
       console.log('User 2: ', user2)
       console.log('Merchant 2: ', merchant2)
-      await contractInstance.addPoints(user1, 100, { from: merchant1 })
-      await contractInstance.addPoints(user2, 200, { from: merchant1 })
-      await contractInstance.addPoints(user1, 300, { from: merchant2 })
-      await contractInstance.addPoints(user2, 400, { from: merchant2 })
+
+      await contractInstance.addPoints(user1, 1000, { from: merchant1 })
+      await contractInstance.addPoints(user2, 2000, { from: merchant1 })
+      await contractInstance.addPoints(user1, 3000, { from: merchant2 })
+      await contractInstance.addPoints(user2, 4000, { from: merchant2 })
+
+      await contractInstance.createOffer('usr1Buy', 'buy', merchant1, merchant2, 30, { from: user1, gas: 1000000 })
+      await contractInstance.createOffer('usr1Sell', 'sell', merchant2, merchant1, 40, { from: user1, gas: 1000000 })
+      await contractInstance.createOffer('usr2Buy', 'buy', merchant1, merchant2, 50, { from: user2, gas: 1000000 })
+      await contractInstance.createOffer('usr2Sell', 'sell', merchant2, merchant2, 60, { from: user2, gas: 1000000 })
+
+      console.log('SEED DATA SUCCESS!!!!')
   } catch (err) {
     console.log('ERROR!!!:', err)
   }

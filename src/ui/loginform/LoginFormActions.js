@@ -95,7 +95,7 @@ export function loginUser(coinbase, cookies) {
                 cookies.set('coinbase', coinbase, { path: '/' })
                 cookies.set('accountInfo', {name: web3.toUtf8(name), rate, isMerChant}, { path: '/' })
             }
-            
+
             dispatch(userLoggedIn({
                 name: web3.toUtf8(name),
                 coinbase,
@@ -103,7 +103,7 @@ export function loginUser(coinbase, cookies) {
                 isMerChant,
                 code,
                 url,
-                wCoinBalance: wCoinBalance.c[0]
+                wecoinBalance: wCoinBalance.c[0]
             }))
             const currentLocation = browserHistory.getCurrentLocation()
 
