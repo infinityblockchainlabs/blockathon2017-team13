@@ -36,7 +36,7 @@ class BuyTab extends Component {
             </Item>
           </List>
           <WhiteSpace />
-          <List>
+          {buyList && buyList.length > 0 && <List>
             {buyList.map(i => (
               <Item
                 key={i.id}
@@ -46,11 +46,13 @@ class BuyTab extends Component {
                 multipleLine
                 wrap
               >{i.username}<br/>
-                <span className="item-buy-amount">buys <strong>{i.buy_amount} {i.merchant_code} pts.</strong></span><br/>
+                <span className="item-buy-amount">buys <strong>{i.buy_amount} {i.merchant_code}
+                  pts.</strong></span><br/>
                 <span className="item-buy-price">Price: <strong>{i.buy_total_price} WeCoin</strong></span><br/>
               </Item>
             ))}
           </List>
+          }
         </WingBlank>
       </div>
     )
