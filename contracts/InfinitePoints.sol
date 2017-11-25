@@ -230,7 +230,7 @@ contract InfinitePoints {
         Offer memory offer = offers[offerId];
 
         if (offer.typ == "sell") { // sender buy
-            exchangeWCoinToPoint(offer.to, offer.amount);
+            exchangeWCoinToPoint(offer.from, offer.amount);
         } else { // sender sell
             exchangePointToWCoin(offer.from, offer.amount);
         }
