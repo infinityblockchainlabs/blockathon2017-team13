@@ -194,9 +194,9 @@ contract InfinitePoints {
       offerList.push(offerId);
     }
 
-    function getOffer (string offerId) constant public returns (string, string, string, string) {
+    function getOffer (string offerId) constant public returns (string, string, string, string, uint256, bool) {
       Offer offer = offers[offerId];
-      return (toString(offer.seller), toString(offer.buyer), toString(offer.from), toString(offer.to));
+      return (toString(offer.seller), toString(offer.buyer), toString(offer.from), toString(offer.to), offer.amount, offer.sold);
     }
 
     function getOfferIds () public returns (string) {
