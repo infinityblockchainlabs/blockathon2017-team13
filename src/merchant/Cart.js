@@ -3,6 +3,10 @@ import {Row, Col, Card, Input, Button, Icon} from 'antd'
 import {Link} from 'react-router'
 
 class Cart extends Component {
+  handlePurchaseClick() {
+    this.props.purchase()
+  }
+
   render() {
     return (
       <div style={{background: '#ECECEC', padding: '30px'}}>

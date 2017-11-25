@@ -88,24 +88,22 @@ export function loginUser(username, password, cookies) {
             const contractInstance = await infiniteContract.deployed()
 
             const accounts = web3.eth.accounts
+            const credentials = {
+                'demo1': accounts[1],
+                'demo2': accounts[3],
+                'merchant1': accounts[2],
+                'merchant2': accounts[4],
+            }
             let account
-            if (username === 'demo1') {
-                if (password === 'demo') {
-                    account = accounts[1]
-                } else {
-                    dispatch(setLoaderStatus(true))
-                    return dispatch(setErrorMessage('Wrong Password!'))
-                }
-            } else if (username === 'demo2') {
-                if (password === 'demo') {
-                    account = accounts[3]
-                } else {
-                    dispatch(setLoaderStatus(true))
-                    return dispatch(setErrorMessage('Wrong Password!'))
-                }
-            } else {
+            
+            if (!(username in credentials)) {
                 dispatch(setLoaderStatus(true))
                 return dispatch(setErrorMessage('Account does not exists!'))
+            } else if (password !== 'demo') {
+                dispatch(setLoaderStatus(true))
+                return dispatch(setErrorMessage('Wrong Password!'))
+            } else {
+                account = credentials[username]
             }
 
             const accountInfo = await contractInstance.getAccountInfo({ from: account })
