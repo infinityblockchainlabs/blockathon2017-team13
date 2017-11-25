@@ -1,5 +1,6 @@
 const initialState = {
   data: null,
+  merchants: [],
   errorMessage: null,
   infoMessage: null,
   isLoaded: true
@@ -24,6 +25,13 @@ const userReducer = (state = initialState, action) => {
     return {
       ...state,
       data: null
+    }
+  }
+
+  if (action.type === 'USER_GOT_MERCHANTS') {
+    return {
+      ...state,
+      merchants: action.payload
     }
   }
 

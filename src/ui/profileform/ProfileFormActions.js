@@ -1,4 +1,4 @@
-import AuthenticationContract from '../../../build/contracts/Authentication.json'
+import AuthenticationContract from '../../../build/contracts/InfinitePoints.json'
 import store from '../../store'
 import { setErrorMessage, setInfoMessage, unlockAccount, setLoaderStatus } from '../loginform/LoginFormActions'
 

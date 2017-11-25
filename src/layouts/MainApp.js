@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
 import { TabBar } from 'antd-mobile'
-import AccountTab from './tabs/AccountTab'
-import BuyTab from './tabs/BuyTab'
-import SellTab from './tabs/SellTab'
+import AccountTabContainer from './tabs/account/AccountTabContainer'
+import BuyTabContainer from './tabs/buy/BuyTabContainer'
+import SellTabContainer from './tabs/sell/SellTabContainer'
 import AdvertiseTab from './tabs/AdvertiseTab'
 
 class MainApp extends Component {
@@ -45,7 +45,7 @@ class MainApp extends Component {
                 });
               }}
             >
-              <AccountTab />
+              <AccountTabContainer />
             </TabBar.Item>
             <TabBar.Item
               icon={
@@ -72,7 +72,7 @@ class MainApp extends Component {
                 });
               }}
             >
-              <BuyTab />
+              <BuyTabContainer />
             </TabBar.Item>
             <TabBar.Item
               icon={
@@ -99,7 +99,7 @@ class MainApp extends Component {
                 });
               }}
             >
-              <SellTab />
+              <SellTabContainer />
             </TabBar.Item>
             <TabBar.Item
               icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}

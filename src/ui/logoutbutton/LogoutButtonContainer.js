@@ -1,17 +1,20 @@
 import { connect } from 'react-redux'
 import LogoutButton from './LogoutButton'
 import { logoutUser } from './LogoutButtonActions'
+import { withCookies } from 'react-cookie'
 
 const mapStateToProps = (state, ownProps) => {
   return {}
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { cookies } = ownProps
+
   return {
     onLogoutUserClick: (event) => {
       event.preventDefault();
 
-      dispatch(logoutUser())
+      dispatch(logoutUser(cookies))
     }
   }
 }
@@ -21,4 +24,4 @@ const LogoutButtonContainer = connect(
   mapDispatchToProps
 )(LogoutButton)
 
-export default LogoutButtonContainer
+export default withCookies(LogoutButtonContainer)

@@ -1,4 +1,4 @@
-import CryptoLicenseToken from '../../../build/contracts/CryptoLicenseToken.json'
+import CryptoLicenseToken from '../../../build/contracts/InfinitePoints.json'
 import store from '../../store'
 import { loginUser, setErrorMessage, setInfoMessage, unlockAccount, setLoaderStatus } from '../loginform/LoginFormActions'
 

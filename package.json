@@ -52,6 +52,7 @@
     "antd": "^2.13.10",
     "rc-form": "^2.1.0",
     "react": "^15.4.2",
+    "react-cookie": "^2.1.2",
     "react-dom": "^15.4.2",
     "react-loader": "^2.4.2",
     "react-redux": "^5.0.2",

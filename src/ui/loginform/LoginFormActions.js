@@ -1,5 +1,4 @@
-import AuthenticationContract from '../../../build/contracts/Authentication.json'
-import CryptoLicenseToken from '../../../build/contracts/CryptoLicenseToken.json'
+import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
 import { getEtherBalance } from '../profileform/ProfileFormActions'
 import { browserHistory } from 'react-router'
 import store from '../../store'
@@ -10,6 +9,7 @@ export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE'
 export const SET_INFO_MESSAGE = 'SET_INFO_MESSAGE'
 export const SET_LOADER_STATUS = 'SET_LOADER_STATUS'
+
 function userLoggedIn(user) {
   return {
     type: USER_LOGGED_IN,
@@ -39,7 +39,7 @@ export function setLoaderStatus(isLoaded) {
 }
 
 export const unlockAccount = (account, password) => new Promise((resolve, reject) => {
-    let web3 = store.getState().web3.web3Instance
+    let web3 = 'store'.getState().web3.web3Instance
     if (typeof web3 !== 'undefined') {
         web3.personal.unlockAccount(account, password, (err) => {
             if (err) return reject(err)
@@ -50,35 +50,56 @@ export const unlockAccount = (account, password) => new Promise((resolve, reject
     }
 })
 
-export function loginUser(coinbase) {
+export function restoreSession(cookies) {
+    if (!cookies) return
+
+    return ((dispatch) => {
+        const coinbase = cookies.get('coinbase')
+
+        if (coinbase && coinbase.length > 0) {
+            const accountInfo = cookies.get('accountInfo')
+            const {name, rate, isMerChant} = accountInfo
+            dispatch(userLoggedIn({
+                name,
+                coinbase,
+                rate,
+                isMerChant
+            }))
+
+            const currentLocation = browserHistory.getCurrentLocation()
+            
+            if ('redirect' in currentLocation.query) {
+                return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
+            }
+
+            browserHistory.replace('/app')
+        }
+    })
+}
+
+export function loginUser(coinbase, cookies) {
   let web3 = store.getState().web3.web3Instance
   if (typeof web3 !== 'undefined') {
     return (async (dispatch) => {
         try {
             dispatch(setLoaderStatus(false))
             dispatch(setErrorMessage(null))
-            const authentication = contract(AuthenticationContract)
-            const cryptoToken = contract(CryptoLicenseToken)
-            authentication.setProvider(web3.currentProvider)
-            cryptoToken.setProvider(web3.currentProvider)
-            const [authenticationInstance, tokenInstance] = await Promise.all([
-                authentication.deployed(),
-                cryptoToken.deployed()
-            ])
-            const [name, tokenBalance, ethBalance, price] = await Promise.all([
-                authenticationInstance.login({from: coinbase}),
-                tokenInstance.getBalance({ from: coinbase }),
-                getEtherBalance(coinbase),
-                tokenInstance.getPrices()
-            ])
-            const [p1, p2] = price || []
+            const infiniteContract = contract(InfinitePointsContract)
+            infiniteContract.setProvider(web3.currentProvider)
+            const contractInstance = await infiniteContract.deployed()
+            const accountInfo = await contractInstance.getAccountInfo({ from: coinbase})
+            const [name, rate, isMerChant] = accountInfo
+
+            if (cookies) {
+                cookies.set('coinbase', coinbase, { path: '/' })
+                cookies.set('accountInfo', {name: web3.toUtf8(name), rate, isMerChant}, { path: '/' })
+            }
+            
             dispatch(userLoggedIn({
                 name: web3.toUtf8(name),
                 coinbase,
-                tokenBalance: tokenBalance.c[0],
-                ethBalance,
-                sellPrice: web3.fromWei(p1, 'ether'),
-                buyPrice: web3.fromWei(p2, 'ether'),
+                rate: rate.c[0],
+                isMerChant
             }))
             const currentLocation = browserHistory.getCurrentLocation()
 
@@ -86,7 +107,7 @@ export function loginUser(coinbase) {
                 return browserHistory.push(decodeURIComponent(currentLocation.query.redirect))
             }
             dispatch(setLoaderStatus(true))
-            browserHistory.push('/app')
+            browserHistory.replace('/app')
         } catch(err) {
             dispatch(setLoaderStatus(true))
             dispatch(setErrorMessage(err.message))

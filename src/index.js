@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
+import { CookiesProvider } from 'react-cookie'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
 import getWeb3 from './util/web3/getWeb3'
@@ -12,6 +13,7 @@ import Home from './layouts/home/Home'
 import SignUp from './layouts/signup/SignUp'
 import Login from './layouts/login/Login'
 import MainApp from './layouts/MainApp'
+import CreateFakeData from './layouts/CreateFakeData'
 
 // Merchant Web Demo
 import MerchantDemo from './merchant/MerchantDemo'
@@ -38,21 +40,24 @@ getWeb3
 
 ReactDOM.render((
     <Provider store={store}>
-      <Router history={history}>
-        <Route path="/" component={App}>
-          <IndexRoute component={Home} />
-          <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
-          <Route path="login" component={UserIsNotAuthenticated(Login)} />
-          <Route path="app" component={UserIsAuthenticated(MainApp)} />
-        </Route>
-        <Route path="/merchant" component={MerchantDemo}>
-          <IndexRoute component={ProductList} />
-          <Route path="user_profile" component={UserProfile} />
-          <Route path="product" component={ProductDetails} />
-          <Route path="purchased" component={PurchasedSuccess} />
-          <Route path="cart" component={Cart} />
-        </Route>
-      </Router>
+      <CookiesProvider>
+        <Router history={history}>
+          <Route path="/" component={App}>
+            <IndexRoute component={Home} />
+            <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
+            <Route path="login" component={UserIsNotAuthenticated(Login)} />
+            <Route path="app" component={UserIsAuthenticated(MainApp)} />
+            <Route path="fake" component={CreateFakeData} />
+          </Route>
+          <Route path="/merchant" component={MerchantDemo}>
+            <IndexRoute component={ProductList} />
+            <Route path="user_profile" component={UserProfile} />
+            <Route path="product" component={ProductDetails} />
+            <Route path="purchased" component={PurchasedSuccess} />
+            <Route path="cart" component={Cart} />
+          </Route>
+        </Router>
+      </CookiesProvider>
     </Provider>
   ),
   document.getElementById('root')

@@ -8,8 +8,13 @@ function userLoggedOut(user) {
   }
 }
 
-export function logoutUser() {
+export function logoutUser(cookies) {
   return function(dispatch) {
+    if (cookies) {
+      cookies.remove('coinbase', { path: '/' })
+      cookies.remove('accountInfo', { path: '/' })
+    }
+    
     // Logout user.
     dispatch(userLoggedOut())
 
