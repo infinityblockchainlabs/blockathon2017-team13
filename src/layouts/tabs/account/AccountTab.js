@@ -102,7 +102,7 @@ class AccountTab extends Component {
           >
             <List renderHeader={() => <div>Log Out?</div>} className="popup-list">
               <List.Item key={1} multipleLine={true}>
-                <Button type="default" onClick={this.onClose('modalLogOut').bind(this)}>Cancel</Button>
+                <Button type="default" onClick={this.onClose('modalLogOut')}>Cancel</Button>
               </List.Item>
               <List.Item key={2}>
                 <LogoutButton />

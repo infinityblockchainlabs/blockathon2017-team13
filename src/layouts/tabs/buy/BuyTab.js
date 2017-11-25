@@ -25,7 +25,7 @@ class BuyTab extends Component {
         <NavBar
           mode="dark"
           rightContent={[
-            <Icon key={0} type="loading" onClick={() => this.refreshData().bind(this)} />,
+            <Icon key={0} type="loading" onClick={() => this.refreshData()} />,
           ]}
         >Buy Now</NavBar>
         <WingBlank>
