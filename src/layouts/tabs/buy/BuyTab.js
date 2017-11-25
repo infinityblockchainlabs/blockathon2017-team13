@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 
-import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, Badge } from 'antd-mobile'
+import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, ActivityIndicator } from 'antd-mobile'
 
 const { Item, Brief } = List
 
 import './Buy.css'
 
 class BuyTab extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false
+    }
+  }
+
   componentDidMount() {
     setTimeout(() => this.props.getBuyList(), 500)
   }
@@ -16,6 +23,15 @@ class BuyTab extends Component {
     setTimeout(() => this.props.getBuyList(), 500)
   }
 
+  handleBuyItemClick(id) {
+    this.props.buyOffer(id)
+    // TODO Hide loading after transaction finished
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.setState({ loading: false })
+      this.refreshData()
+    }, 3000)
+  }
 
   render() {
     const { buyList } = this.props.exchange
@@ -42,7 +58,7 @@ class BuyTab extends Component {
                 key={i.id}
                 thumb={i.merchant_icon}
                 extra={<Button type="primary">Buy</Button>}
-                onClick={() => this.props.buyOffer(i.id)}
+                onClick={() => this.handleBuyItemClick(i.id)}
                 multipleLine
                 wrap
               >{i.username}<br/>
@@ -53,7 +69,13 @@ class BuyTab extends Component {
             ))}
           </List>
           }
+          <ActivityIndicator
+            toast
+            text="Loading..."
+            animating={this.state.loading}
+          />
         </WingBlank>
+        
       </div>
     )
   }
