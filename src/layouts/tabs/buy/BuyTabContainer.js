@@ -1,13 +1,19 @@
 import { connect } from 'react-redux'
-import BuyTab from './BuyTab'
 import { withCookies } from 'react-cookie'
 
+import BuyTab from './BuyTab'
+import { getBuyList } from './BuyTabActions'
+
 const mapStateToProps = (state) => {
-  return state.user
+  return {
+    exchange: state.exchange,
+    user: state.user
+  }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    getBuyList: () => { dispatch(getBuyList()) }
   }
 }
 

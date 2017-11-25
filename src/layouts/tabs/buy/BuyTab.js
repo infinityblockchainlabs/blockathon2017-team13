@@ -1,14 +1,54 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 
-import { NavBar, WingBlank, Icon } from 'antd-mobile'
+import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, Badge } from 'antd-mobile'
+
+const { Item, Brief } = List
+
+import './Buy.css'
 
 class BuyTab extends Component {
+  componentDidMount() {
+    this.props.getBuyList()
+  }
+
   render() {
+    const { buyList } = this.props.exchange
+    const { wecoinBalance } = this.props.user
+    
     return(
-      <WingBlank>
-        <h1>Buy Tab</h1>
-      </WingBlank>
+      <div>
+        <NavBar
+          mode="dark"
+          rightContent={[
+            <Icon key="0" type="ellipsis" />,
+          ]}
+        >Buy</NavBar>
+        <WingBlank>
+          <WhiteSpace />
+          <List renderHeader="" className="my-list">
+            <Item extra={this.props.user.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
+              {this.props.user.data.name} 
+            </Item>
+          </List>
+          <WhiteSpace />
+          <List renderHeader={() => 'Buy Now'}>
+            {buyList.map(i => (
+              <Item
+                key={i.id}
+                thumb={i.merchant_icon}
+                extra={<Button type="primary">Buy</Button>}
+                onClick={() => {}}
+                multipleLine
+                wrap
+              >{i.username}<br/>
+                <span className="item-buy-amount">buys <strong>{i.buy_amount} {i.merchant_code} pts.</strong></span><br/>
+                <span className="item-buy-price">Price: <strong>{i.buyt_total_price} WeCoin</strong></span><br/>
+              </Item>
+            ))}
+          </List>
+        </WingBlank>
+      </div>
     )
   }
 }
