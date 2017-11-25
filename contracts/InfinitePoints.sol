@@ -171,7 +171,6 @@ contract InfinitePoints {
       Offer offer = offers[offerId];
       Account creator = accounts[offer.creator];
       Account from = accounts[offer.from];
-      Account to = accounts[offer.to];
       return (offerId, creator.name, concat("", from.code), offer.amount, concat(from.url, ""), offer.amount * accounts[offer.from].rate);
     }
 
