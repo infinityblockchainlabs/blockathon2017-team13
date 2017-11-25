@@ -55,10 +55,10 @@ export function restoreSession(cookies) {
 
     return ((dispatch) => {
         const coinbase = cookies.get('coinbase')
-        const accountInfo = cookies.get('accountInfo')
-        const {name, rate, isMerChant} = accountInfo
 
-        if (coinbase && coinbase.length > 0 && accountInfo) {
+        if (coinbase && coinbase.length > 0) {
+            const accountInfo = cookies.get('accountInfo')
+            const {name, rate, isMerChant} = accountInfo
             dispatch(userLoggedIn({
                 name,
                 coinbase,

@@ -8,23 +8,38 @@ const contract = require('truffle-contract')
 
 const createFakeData = async () => {
   let web3 = store.getState().web3.web3Instance
-
+  console.log(web3.eth.accounts, '@@@@@@@@')
   // Create fake data
-  const ZERO_ACCOUNT = '0x5aa875e1ec71a37d671c7c25cae43d7e7e4d5830'
+
+  const accounts = web3.eth.accounts
+  const ZERO_ACCOUNT = accounts[0];
   const infiniteContract = contract(InfinitePointsContract)
   infiniteContract.setProvider(web3.currentProvider)
   const contractInstance = await infiniteContract.deployed()
-  await contractInstance.signup('WeUP', '0x5aa875e1ec71a37d671c7c25cae43d7e7e4d5830',
+  await contractInstance.signup('Weup', accounts[0],
       true, 1, { from: ZERO_ACCOUNT })
-  await contractInstance.signup('Lezede', '0x2d1d9f60c037b1775395100b075a9b69bf3e84f1',
+  await contractInstance.signup('User 1', accounts[1],
+        false, 0, { from: ZERO_ACCOUNT })
+  await contractInstance.signup('Merchant 1', accounts[2],
       true, 2, { from: ZERO_ACCOUNT })
+
+  await contractInstance.signup('User 2', accounts[3],
+      false, 0, { from: ZERO_ACCOUNT })
+  await contractInstance.signup('Merchant 2', accounts[4],
+      true, 2, { from: ZERO_ACCOUNT })
+
+  console.log('Weup: ', accounts[0])
+  console.log('User 1: ', accounts[1])
+  console.log('Merchant 1: ', accounts[2])
+  console.log('User 2: ', accounts[3])
+  console.log('Merchant 2: ', accounts[4])
 }
 
 const mapStateToProps = (state) => {
   return state.user
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
   return {
     createFakeData: createFakeData
   }
