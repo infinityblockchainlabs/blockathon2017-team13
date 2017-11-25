@@ -93,6 +93,12 @@ contract InfinitePoints {
         points[msg.sender][customer] += point;
     }
 
+    function addWcoins (address customer, uint256 point) public {
+        require(!isMerchant(customer));
+        require(point > 0);
+        wcoins[customer] += point;
+    }
+
     function subPoints (address customer, uint256 point) public {
         require(isMerchant(msg.sender));
         require(!isMerchant(customer));
