@@ -8,7 +8,7 @@ const Item = List.Item
 
 class AccountTab extends Component {
   componentDidMount() {
-    this.props.getMerchants()
+    setTimeout(() => this.props.getMerchants(), 1000)
   }
 
   render() {
