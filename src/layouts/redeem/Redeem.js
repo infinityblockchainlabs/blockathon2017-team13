@@ -15,6 +15,7 @@ class Redeem extends Component {
     super(props)
     this.state = {
       modalNotEnoughPoints: false,
+      modalRedeemSuccess: false,
     }
   }
 
@@ -23,6 +24,7 @@ class Redeem extends Component {
       this.setState({ modalNotEnoughPoints: true })
     } else {
       this.props.redeem(points)
+      this.setState({ modalRedeemSuccess: true })
     }
   }
 
@@ -92,7 +94,23 @@ class Redeem extends Component {
           >
             <List renderHeader={<div>You have not enough points!</div>} className="popup-list">
               <List.Item>
-                <Button type="primary" onClick={() => { this.onCloseModal('modalNotEnoughPoints') }}>Ok</Button>
+                <Button type="primary" onClick={() => this.onCloseModal('modalNotEnoughPoints') }>Ok</Button>
+              </List.Item>
+            </List>
+          </Modal>
+
+          <Modal
+            popup
+            visible={this.state.modalRedeemSuccess}
+            maskClosable={false}
+            animationType="slide-up"
+          >
+            <List renderHeader={<div>Redeem Successfully!</div>} className="popup-list">
+              <List.Item>
+                <Button type="default" onClick={() => {
+                  this.onCloseModal('modalRedeemSuccess')
+                  browserHistory.goBack()
+                }}>Ok</Button>
               </List.Item>
             </List>
           </Modal>
@@ -114,8 +132,6 @@ function redeemPoints(points) {
 
         await unlockAccount(merchant1, 'testaccteamweup')
         await contractInstance.subPoints(coinbase, points, { from: merchant1 })
-        
-        browserHistory.goBack()
       } catch (err) {
         console.error(err)
       }
