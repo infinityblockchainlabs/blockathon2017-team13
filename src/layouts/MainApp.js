@@ -51,14 +51,14 @@ class MainApp extends Component {
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(/images/shopping-cart-down-2.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-down.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               selectedIcon={
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(/images/shopping-cart-down-2-fill.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-down-fill.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               title="Buy"
@@ -77,14 +77,14 @@ class MainApp extends Component {
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(/images/shopping-cart-up-2.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-up.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               selectedIcon={
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(/images/shopping-cart-up-2-fill.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-up-fill.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               title="Sell"

@@ -43,6 +43,9 @@ class AccountTab extends Component {
       <div>
         <NavBar
           mode="dark"
+          rightContent={[
+            <Icon key="0" type="ellipsis" />,
+          ]}
         >Account</NavBar>
         <WingBlank>
           <List renderHeader="" className="my-list">
