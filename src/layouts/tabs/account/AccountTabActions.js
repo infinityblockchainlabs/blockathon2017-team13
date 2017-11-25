@@ -6,6 +6,7 @@ import contract from 'truffle-contract'
 export const USER_GOT_MERCHANTS = 'USER_GOT_MERCHANTS'
 
 function getMerchantsSuccess(merchants) {
+    console.log(merchants, '@@@@@@@')
   return {
     type: USER_GOT_MERCHANTS,
     payload: merchants,
@@ -21,6 +22,7 @@ export function getMerchants() {
                 const infiniteContract = contract(InfinitePointsContract)
                 infiniteContract.setProvider(web3.currentProvider)
                 const contractInstance = await infiniteContract.deployed()
+                console.log(coinbase)
                 const merChantIds = await contractInstance.getMerchants({ from: coinbase })
                 const merchants = await Promise.all(merChantIds.split(',').map(merchant =>
                     contractInstance.getMerchantPoints(merchant, coinbase)
