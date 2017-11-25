@@ -74,7 +74,7 @@ contract InfinitePoints {
     }
 
     function getAccountInfo () constant public returns (bytes32, uint256, bool) {
-        Account acc = accounts[msg.sender];
+        Account memory acc = accounts[msg.sender];
         return (acc.name, acc.rate, acc.isMerchant);
     }
 
@@ -150,9 +150,9 @@ contract InfinitePoints {
         return points[merchant][msg.sender] * rate;
     }
 
-    function pointsToWCoin (address merchant, uint256 amount) public {
+    function exchangePointToWCoin (address merchant, uint256 amount) public {
         require(isMerchant(merchant)); // 
-        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoin
+        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoins
         require(points[merchant][msg.sender] > 0);
         require(amount > 0);
 
@@ -162,9 +162,9 @@ contract InfinitePoints {
         wcoins[msg.sender] += amount * rate;
     }
 
-    function wcoinsToPoint (address merchant, uint256 amount) public {
+    function exchangeWCoinToPoint (address merchant, uint256 amount) public {
         require(isMerchant(merchant)); // 
-        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoin
+        require(!isMerchant(msg.sender)); // only customer can exchange wcoins to points
         require(points[merchant][msg.sender] > 0);
         require(amount > 0);
 
@@ -178,9 +178,9 @@ contract InfinitePoints {
         return accounts[id].isMerchant;
     }
 
-    function setOffer (string offerId, bytes32 typ, address from, address to, uint256 amount) public {
+    function createOffer (string offerId, bytes32 typ, address from, address to, uint256 amount) public {
       require(typ == "buy" || typ == "sell");
-      Offer offer;
+      Offer memory offer;
       offer.typ = typ;
       offer.from = from;
       offer.to = to;
@@ -201,8 +201,8 @@ contract InfinitePoints {
 
     function getOfferIds () public returns (string) {
         string memory offerIds = "";
-        for (uint i = 0; i <offerList.length; ++i) {
-            if(!offers[offerList[i]].sold) {
+        for (uint i = 0; i < offerList.length; ++i) {
+            if (!offers[offerList[i]].sold) {
                 if (i > 0) offerIds = concat(offerIds, ",");
                 offerIds = concat(offerIds, offerList[i]);
             }
