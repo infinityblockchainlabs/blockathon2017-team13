@@ -43,9 +43,9 @@ export function setLoaderStatus(isLoaded) {
 }
 
 export const unlockAccount = (account, password) => new Promise((resolve, reject) => {
-    let web3 = 'store'.getState().web3.web3Instance
+    let web3 = store.getState().web3.web3Instance
     if (typeof web3 !== 'undefined') {
-        web3.personal.unlockAccount(account, password, (err) => {
+        web3.personal.unlockAccount(account, password, 3000, (err) => {
             if (err) return reject(err)
             resolve()
         })
