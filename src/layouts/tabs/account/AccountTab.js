@@ -89,7 +89,7 @@ class AccountTab extends Component {
             <List renderHeader={() => <div>Information</div>} className="popup-list">
               <List.Item key={1} multipleLine={true}>Place holder</List.Item>
               <List.Item key={2}>
-                <Button type="primary" onClick={() => this.onClose('modalCoinIncrement')}>OK</Button>
+                <Button type="primary" onClick={this.onClose('modalCoinIncrement')}>OK</Button>
               </List.Item>
             </List>
           </Modal>
