@@ -127,28 +127,28 @@ contract InfinitePoints {
         return points[merchant][msg.sender] * rate;
     }
 
-    function exchangePointToWCoin (address merchant, uint256 amount) public {
+    function exchangePointToWCoin (address customer, address merchant, uint256 amount) internal {
         require(isMerchant(merchant)); // 
-        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoins
-        require(points[merchant][msg.sender] > 0);
+        require(!isMerchant(customer)); // only customer can exchange points to wcoins
+        require(points[merchant][customer] > 0);
         require(amount > 0);
 
         uint256 rate = accounts[merchant].rate;
 
-        points[merchant][msg.sender] -= amount;
-        wcoins[msg.sender] += amount * rate;
+        points[merchant][customer] -= amount;
+        wcoins[customer] += amount * rate;
     }
 
-    function exchangeWCoinToPoint (address merchant, uint256 amount) public {
+    function exchangeWCoinToPoint (address customer, address merchant, uint256 amount) internal {
         require(isMerchant(merchant)); // 
-        require(!isMerchant(msg.sender)); // only customer can exchange wcoins to points
-        require(points[merchant][msg.sender] > 0);
+        require(!isMerchant(customer)); // only customer can exchange wcoins to points
+        require(points[merchant][customer] > 0);
         require(amount > 0);
 
         uint256 rate = accounts[merchant].rate;
 
-        wcoins[msg.sender] -= amount;
-        points[merchant][msg.sender] += amount / rate;
+        wcoins[customer] -= amount;
+        points[merchant][customer] += amount / rate;
     }
 
     function isMerchant (address id) constant internal returns (bool) {
@@ -230,9 +230,9 @@ contract InfinitePoints {
         Offer memory offer = offers[offerId];
 
         if (offer.typ == "sell") { // sender buy
-            exchangeWCoinToPoint(offer.from, offer.amount);
+            exchangeWCoinToPoint(msg.sender, offer.from, offer.amount);
         } else { // sender sell
-            exchangePointToWCoin(offer.from, offer.amount);
+            exchangePointToWCoin(msg.sender, offer.from, offer.amount);
         }
 
         delete offers[offerId];
