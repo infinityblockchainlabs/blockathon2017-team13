@@ -34,7 +34,7 @@ export function getSellList() {
                     sell_total_price: fromAmount.c[0]
                 }))))
             } catch (err) {
-                console.log(err, '@@@@@@')
+                console.log(err)
                 dispatch(setErrorMessage(err.message))
             }
         })

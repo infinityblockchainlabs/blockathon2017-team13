@@ -6,7 +6,6 @@ import contract from 'truffle-contract'
 export const EXCHANGE_GOT_BUY_LIST = 'EXCHANGE_GOT_BUY_LIST'
 
 function getBuyListSuccess(buyList) {
-  console.log(buyList)
   return {
     type: EXCHANGE_GOT_BUY_LIST,
     payload: buyList,
@@ -14,7 +13,6 @@ function getBuyListSuccess(buyList) {
 }
 
 export function getBuyList() {
-    console.log('ttttttttt')
     let web3 = store.getState().web3.web3Instance
     if (typeof web3 !== 'undefined') {
         return (async (dispatch, getState) => {
