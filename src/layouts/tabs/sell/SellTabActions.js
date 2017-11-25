@@ -42,3 +42,23 @@ export function getSellList() {
         console.error('Web3 is not initialized.');
     }
 }
+
+export function sellOffer(offerId) {
+    let web3 = store.getState().web3.web3Instance
+    if (typeof web3 !== 'undefined') {
+        return (async (dispatch, getState) => {
+            try {
+                const { user: { data: { coinbase } } } = getState()
+                const infiniteContract = contract(InfinitePointsContract)
+                infiniteContract.setProvider(web3.currentProvider)
+                const contractInstance = await infiniteContract.deployed()
+                await contractInstance.convertPoint(offerId, { from: coinbase })
+            } catch (err) {
+                console.log(err)
+                dispatch(setErrorMessage(err.message))
+            }
+        })
+    } else {
+        console.error('Web3 is not initialized.');
+    }
+}

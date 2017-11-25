@@ -1,5 +1,4 @@
 import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
-import { getEtherBalance } from '../profileform/ProfileFormActions'
 import { browserHistory } from 'react-router'
 import store from '../../store'
 

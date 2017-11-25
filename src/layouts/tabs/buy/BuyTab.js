@@ -19,7 +19,6 @@ class BuyTab extends Component {
 
   render() {
     const { buyList } = this.props.exchange
-    console.log(buyList)
     
     return(
       <div>

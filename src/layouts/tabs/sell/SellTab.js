@@ -41,7 +41,7 @@ class SellTab extends Component {
                 key={i.id}
                 thumb={i.merchant_icon}
                 extra={<Button type="warning">Sell</Button>}
-                onClick={() => {}}
+                onClick={() => this.props.sellOffer(i.id)}
                 multipleLine
                 wrap
               >{i.username}<br/>
