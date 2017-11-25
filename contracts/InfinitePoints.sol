@@ -167,14 +167,11 @@ contract InfinitePoints {
         offerList.push(offerId);
     }
 
-    function getOffer (string offerId) constant public returns (bytes32, string, string, uint256, string, string, uint256, uint256) {
+    function getOffer (string offerId) constant public returns (string, bytes32, string, uint256, string, uint256) {
       Offer offer = offers[offerId];
       Account creator = accounts[offer.creator];
       Account from = accounts[offer.from];
-      Account to = accounts[offer.to];
-      return (creator.name, concat("", from.code), concat("", to.code), offer.amount, concat(from.url, ""), concat("", to.url),
-        offer.amount * accounts[offer.from].rate, offer.amount * accounts[offer.to].rate
-      );
+      return (offerId, creator.name, concat("", from.code), offer.amount, concat(from.url, ""), offer.amount * accounts[offer.from].rate);
     }
 
     function getOfferIds (bytes32 typ) constant public returns (string) {

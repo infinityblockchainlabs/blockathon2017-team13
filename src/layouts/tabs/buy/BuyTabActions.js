@@ -6,7 +6,6 @@ import contract from 'truffle-contract'
 export const EXCHANGE_GOT_BUY_LIST = 'EXCHANGE_GOT_BUY_LIST'
 
 function getBuyListSuccess(buyList) {
-  console.log(buyList)
   return {
     type: EXCHANGE_GOT_BUY_LIST,
     payload: buyList,
@@ -14,7 +13,6 @@ function getBuyListSuccess(buyList) {
 }
 
 export function getBuyList() {
-    console.log('ttttttttt')
     let web3 = store.getState().web3.web3Instance
     if (typeof web3 !== 'undefined') {
         return (async (dispatch, getState) => {
@@ -27,8 +25,7 @@ export function getBuyList() {
                 const offers = await Promise.all(offerIds.split(',').map(offerId =>
                     contractInstance.getOffer(offerId)
                 ))
-                console.log(offerIds, offers, '@@@@@@@@@@@')
-                dispatch(getBuyListSuccess(offers.map(([name, fromCode,,amount, fromUrl,,fromAmount], id) => ({
+                dispatch(getBuyListSuccess(offers.map(([id, name, fromCode, amount, fromUrl, fromAmount]) => ({
                     id,
                     username: web3.toUtf8(name),
                     merchant_icon: fromUrl,
@@ -37,7 +34,7 @@ export function getBuyList() {
                     buy_total_price: fromAmount.c[0]
                 }))))
             } catch (err) {
-                console.log(err, '@@@@@@')
+                console.log(err)
                 dispatch(setErrorMessage(err.message))
             }
         })
