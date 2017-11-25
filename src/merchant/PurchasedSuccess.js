@@ -6,6 +6,8 @@ import { browserHistory } from 'react-router'
 import contract from 'truffle-contract'
 import InfinitePointsContract from '../../build/contracts/InfinitePoints.json'
 
+import { user1, merchant1 } from '../constants'
+
 class PurchasedSuccess extends Component {
   componentDidMount() {
     setTimeout(() => this.props.purchase(), 500)
@@ -48,9 +50,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           const infiniteContract = contract(InfinitePointsContract)
           infiniteContract.setProvider(web3.currentProvider)
           const contractInstance = await infiniteContract.deployed()
-          const accounts = web3.eth.accounts
 
-          await contractInstance.addPoints(accounts[1], 3000)
+          await contractInstance.addPoints(user1, 3000, { from: merchant1 })
 
           browserHistory.push('/merchants/purchased')
         })

@@ -2,6 +2,11 @@ import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json
 import { browserHistory } from 'react-router'
 import store from '../../store'
 
+import {
+    user1, user2,
+    merchant1, merchant2
+} from '../../constants'
+
 const contract = require('truffle-contract')
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
@@ -118,12 +123,11 @@ export function loginUser(username, password, cookies) {
             infiniteContract.setProvider(web3.currentProvider)
             const contractInstance = await infiniteContract.deployed()
 
-            const accounts = web3.eth.accounts
             const credentials = {
-                'demo1': accounts[1],
-                'demo2': accounts[3],
-                'merchant1': accounts[2],
-                'merchant2': accounts[4],
+                'demo1': user1,
+                'demo2': user2,
+                'merchant1': merchant1,
+                'merchant2': merchant2,
             }
             let account
             
