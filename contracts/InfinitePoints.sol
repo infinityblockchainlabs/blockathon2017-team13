@@ -67,22 +67,26 @@ contract InfinitePoints {
         return (acc.name, acc.rate, acc.isMerchant);
     }
 
-    function addPoints (address merchant, uint256 point) public {
+    function addPoints (address customer, uint256 point) public {
+        require(isMerchant(msg.sender));
+        require(!isMerchant(customer));
         require(point > 0);
-        require(!isMerchant(msg.sender));
-        require(isMerchant(merchant));
+        require(accounts[customer].name != 0x0);
+        require(!accounts[customer].isMerchant);
 
-        points[merchant][msg.sender] += point;
-        merchants[msg.sender].push(merchant);
+        if (points[msg.sender][customer] == 0) {
+            merchants[customer].push(msg.sender);
+        }
+        points[msg.sender][customer] += point;
     }
 
-    function subPoints (address merchant, uint256 point) public {
+    function subPoints (address customer, uint256 point) public {
+        require(isMerchant(msg.sender));
+        require(!isMerchant(customer));
         require(point > 0);
-        require(!isMerchant(msg.sender));
-        require(isMerchant(merchant));
-        require(points[merchant][msg.sender] >= point);
+        require(points[msg.sender][customer] >= point);
 
-        points[merchant][msg.sender] -= point;
+        points[msg.sender][customer] -= point;
     }
     
     function getPoints (address merchant, address customer) constant public returns (uint256) {
