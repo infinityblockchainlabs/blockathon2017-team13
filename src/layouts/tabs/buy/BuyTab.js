@@ -9,7 +9,7 @@ import './Buy.css'
 
 class BuyTab extends Component {
   componentDidMount() {
-    this.props.getBuyList()
+    setTimeout(() => this.props.getBuyList(), 500)
   }
 
   render() {
