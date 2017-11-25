@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { TabBar } from 'antd-mobile'
-import AccountTab from './tabs/AccountTab'
+import AccountTabContainer from './tabs/account/AccountTabContainer'
 import BuyTab from './tabs/BuyTab'
 import SellTab from './tabs/SellTab'
 import AdvertiseTab from './tabs/AdvertiseTab'
@@ -45,7 +45,7 @@ class MainApp extends Component {
                 });
               }}
             >
-              <AccountTab />
+              <AccountTabContainer />
             </TabBar.Item>
             <TabBar.Item
               icon={

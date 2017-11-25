@@ -90,6 +90,8 @@ export function loginUser(coinbase, cookies) {
             const contractInstance = await infiniteContract.deployed()
             const accountInfo = await contractInstance.getAccountInfo({ from: coinbase})
             const [name, rate, isMerChant] = accountInfo
+            console.log(accountInfo)
+            console.log(web3.toUtf8(name))
 
             if (cookies) {
                 cookies.set('coinbase', coinbase, { path: '/' })
