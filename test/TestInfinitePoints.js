@@ -68,7 +68,7 @@ contract('InfinitePoints', (accounts) => {
     let reallzdWCoinBft1 = await infinitePointInstance.getWCoin(accounts[0], { from: accounts[2] })
     console.log(reallzdWCoinBft1)
 
-    await infinitePointInstance.exchangePointToWCoin(accounts[0], 100, {from: accounts[2]})
+    await infinitePointInstance.exchangePointToWCoin(accounts[2], accounts[0], 100)
     let reallzdWCoinBft = await infinitePointInstance.getWCoin(accounts[0], { from: accounts[2] })
     assert(reallzdWCoinBft.c[0], 100, "Ninh has lzd point relevance to 400 wcoin")
     console.log("After", reallzdWCoinBft.c[0])
@@ -80,9 +80,7 @@ contract('InfinitePoints', (accounts) => {
     await infinitePointInstance.convertPoint("unique_id_01", { from: accounts[2] })
 
     // after transfer
-    // let reallzdWCoinAft = await infinitePointInstance.getWCoinBalance({ from: accounts[2] })
-    // console.log("After Ninh has lzd wcoin", reallzdWCoinAft.c[0])
-    let realtikWCoinAft = await infinitePointInstance.getWCoin(accounts[1], { from: accounts[2] })
-    console.log("After Ninh has tiki wcoin", realtikWCoinAft.c[0])
+    let reallzdWCoinAft = await infinitePointInstance.getWCoinBalance({ from: accounts[2] })
+    console.log("After Ninh has lzd wcoin", reallzdWCoinAft.c[0])
   })
 })
