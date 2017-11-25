@@ -24,7 +24,7 @@ class SellTab extends Component {
         <NavBar
           mode="dark"
           rightContent={[
-            <img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData().bind(this)}/>,
+            <img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData()}/>,
           ]}
         >Sell Now</NavBar>
         <WingBlank>

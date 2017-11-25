@@ -1,13 +1,20 @@
 import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
 
-import {NavBar, WingBlank, WhiteSpace, Icon, List, Button, Badge, Card} from 'antd-mobile'
+import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, ActivityIndicator } from 'antd-mobile'
 
 const {Item, Brief} = List
 
 import './Buy.css'
 
 class BuyTab extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false
+    }
+  }
+
   componentDidMount() {
     setTimeout(() => this.props.getBuyList(), 500)
   }
@@ -16,6 +23,15 @@ class BuyTab extends Component {
     setTimeout(() => this.props.getBuyList(), 500)
   }
 
+  handleBuyItemClick(id) {
+    this.props.buyOffer(id)
+    // TODO Hide loading after transaction finished
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.setState({ loading: false })
+      this.refreshData()
+    }, 3000)
+  }
 
   render() {
     const {buyList} = this.props.exchange
@@ -25,7 +41,7 @@ class BuyTab extends Component {
         <NavBar
           mode="dark"
           rightContent={[
-            <img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData().bind(this)}/>,
+            <Icon key={0} type="loading" onClick={() => this.refreshData()} />,
           ]}
         >Buy Now</NavBar>
         <WingBlank>
@@ -36,21 +52,28 @@ class BuyTab extends Component {
           <WhiteSpace />
           {buyList && buyList.length > 0 && <List>
             {buyList.map(i => (
-              <Item style={{fontSize: 14}}
-                    key={i.id}
-                // thumb={i.merchant_icon}
-                    extra={<Button type="primary" style={{width: 70, float: 'right'}}>Buy</Button>}
-                    onClick={() => this.props.buyOffer(i.id)}
-                    multipleLine
-                    wrap>
-                <span style={{fontSize: 12, color: 'gray'}}><strong>{i.username}</strong> wants to sell</span><br/>
-                <span className="item-buy-amount"><strong>{i.buy_amount} {i.merchant_code}</strong> points</span><br/>
-                <span className="item-buy-price">for <strong>{i.buy_total_price} WeCoin</strong></span>
+              <Item
+                key={i.id}
+                thumb={i.merchant_icon}
+                extra={<Button type="primary">Buy</Button>}
+                onClick={() => this.handleBuyItemClick(i.id)}
+                multipleLine
+                wrap
+              >{i.username}<br/>
+                <span className="item-buy-amount">buys <strong>{i.buy_amount} {i.merchant_code}
+                  pts.</strong></span><br/>
+                <span className="item-buy-price">Price: <strong>{i.buy_total_price} WeCoin</strong></span><br/>
               </Item>
             ))}
           </List>
           }
+          <ActivityIndicator
+            toast
+            text="Loading..."
+            animating={this.state.loading}
+          />
         </WingBlank>
+
       </div>
     )
   }

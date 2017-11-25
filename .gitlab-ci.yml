@@ -9,5 +9,5 @@ build:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
     - git checkout $CI_COMMIT_REF_NAME
-    - docker build -t registry.gitlab.com/emvn/emvn-ico:$CI_COMMIT_REF_NAME .
-    - docker push registry.gitlab.com/emvn/emvn-ico:$CI_COMMIT_REF_NAME
+    - docker build -t registry.gitlab.com/emvn/blockathon:$CI_COMMIT_REF_NAME .
+    - docker push registry.gitlab.com/emvn/blockathon:$CI_COMMIT_REF_NAME

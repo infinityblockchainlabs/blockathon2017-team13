@@ -5,15 +5,17 @@ import { Link } from 'react-router-redux'
 import store from '../../store'
 import contract from 'truffle-contract'
 import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
+import { unlockAccount } from '../../ui/loginform/LoginFormActions'
 
 import { NavBar, WingBlank, Icon, WhiteSpace, Card, Button, List, Modal } from 'antd-mobile'
-import { merchant1 } from '../../constants'
+import { merchant1, ZERO_ACCOUNT } from '../../constants'
 
 class Redeem extends Component {
   constructor(props) {
     super(props)
     this.state = {
       modalNotEnoughPoints: false,
+      modalRedeemSuccess: false,
     }
   }
 
@@ -21,7 +23,8 @@ class Redeem extends Component {
     if (points > 5000) {
       this.setState({ modalNotEnoughPoints: true })
     } else {
-      this.props.redeem()
+      this.props.redeem(points)
+      this.setState({ modalRedeemSuccess: true })
     }
   }
 
@@ -91,7 +94,23 @@ class Redeem extends Component {
           >
             <List renderHeader={<div>You have not enough points!</div>} className="popup-list">
               <List.Item>
-                <Button type="primary" onClick={() => { this.onCloseModal('modalNotEnoughPoints') }}>Ok</Button>
+                <Button type="primary" onClick={() => this.onCloseModal('modalNotEnoughPoints') }>Ok</Button>
+              </List.Item>
+            </List>
+          </Modal>
+
+          <Modal
+            popup
+            visible={this.state.modalRedeemSuccess}
+            maskClosable={false}
+            animationType="slide-up"
+          >
+            <List renderHeader={<div>Redeem Successfully!</div>} className="popup-list">
+              <List.Item>
+                <Button type="default" onClick={() => {
+                  this.onCloseModal('modalRedeemSuccess')
+                  browserHistory.goBack()
+                }}>Ok</Button>
               </List.Item>
             </List>
           </Modal>
@@ -110,9 +129,9 @@ function redeemPoints(points) {
         const infiniteContract = contract(InfinitePointsContract)
         infiniteContract.setProvider(web3.currentProvider)
         const contractInstance = await infiniteContract.deployed()
+
+        await unlockAccount(merchant1, 'testaccteamweup')
         await contractInstance.subPoints(coinbase, points, { from: merchant1 })
-        
-        browserHistory.goBack()
       } catch (err) {
         console.error(err)
       }
@@ -128,7 +147,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    redeem: () => { dispatch(redeemPoints()) }
+    redeem: (points) => { dispatch(redeemPoints(points)) }
   }
 }
 

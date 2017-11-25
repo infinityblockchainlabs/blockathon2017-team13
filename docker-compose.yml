@@ -2,20 +2,11 @@ version: "3"
 
 
 services:
-  ether-node:
-    ports:
-      - 8545:8545
-      - 30303:30303
-    volumes:
-      - /storage/ethereum:/root/.ethereum
-    command: --testnet --rpc --rpcaddr="0.0.0.0" --rpccorsdomain="http://chain-dev.emvn.co:3000,http://localhost:3000" --rpcapi admin,eth,net,web3,personal
-    image: ethereum/client-go:alpine
-
-  react-coins:
+  blockathon:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-    image: registry.gitlab.com/emvn/emvn-ico:master
+    image: registry.gitlab.com/emvn/blockathon:master
 
