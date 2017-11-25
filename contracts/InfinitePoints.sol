@@ -76,9 +76,9 @@ contract InfinitePoints {
         return (eth);
     }
 
-    function getAccountInfo () constant public returns (bytes32, uint256, bool, string, string) {
+    function getAccountInfo () constant public returns (bytes32, uint256, bool, string, string, uint256) {
         Account acc = accounts[msg.sender];
-        return (acc.name, acc.rate, acc.isMerchant, acc.code, acc.url);
+        return (acc.name, acc.rate, acc.isMerchant, acc.code, acc.url, wcoins[msg.sender]);
     }
 
     function addPoints (address customer, uint256 point) public {
