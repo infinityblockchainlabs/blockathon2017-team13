@@ -6,13 +6,19 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './util/wrappers.js'
 import getWeb3 from './util/web3/getWeb3'
 
-// Layouts
+// User App
 import App from './App'
 import Home from './layouts/home/Home'
 import SignUp from './layouts/signup/SignUp'
 import Login from './layouts/login/Login'
-
 import MainApp from './layouts/MainApp'
+
+// Merchant Web Demo
+import MerchanDemo from './merchant/MerchantDemo'
+import UserProfile from './merchant/UserProfile'
+import ProductList from './merchant/ProductList'
+import ProductDetails from './merchant/ProductDetails'
+import PurchasedSuccess from './merchant/PurchasedSuccess'
 
 // Redux Store
 import store from './store'
@@ -37,6 +43,12 @@ ReactDOM.render((
           <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
           <Route path="login" component={UserIsNotAuthenticated(Login)} />
           <Route path="app" component={UserIsAuthenticated(MainApp)} />
+        </Route>
+        <Route path="/merchant" component={MerchanDemo}>
+          <IndexRoute component={ProductList} />
+          <Route path="user_profile" component={UserProfile} />
+          <Route path="product" component={ProductDetails} />
+          <Route path="purchased" component={PurchasedSuccess} />
         </Route>
       </Router>
     </Provider>
