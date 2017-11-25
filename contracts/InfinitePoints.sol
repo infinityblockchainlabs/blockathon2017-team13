@@ -28,7 +28,6 @@ contract InfinitePoints {
       address to;
       uint256 amount;
       bytes32 typ;
-      bool sold;
     }
 
     mapping (string => Offer) offers;
@@ -76,9 +75,9 @@ contract InfinitePoints {
         return (eth);
     }
 
-    function getAccountInfo () constant public returns (bytes32, uint256, bool, string, string) {
+    function getAccountInfo () constant public returns (bytes32, uint256, bool, string, string, uint256) {
         Account acc = accounts[msg.sender];
-        return (acc.name, acc.rate, acc.isMerchant, acc.code, acc.url);
+        return (acc.name, acc.rate, acc.isMerchant, acc.code, acc.url, wcoins[msg.sender]);
     }
 
     function addPoints (address customer, uint256 point) public {
@@ -170,22 +169,20 @@ contract InfinitePoints {
     function getOfferIds () public returns (string) {
         string memory offerIds = "";
         for (uint i = 0; i < offerList.length; ++i) {
-            if (!offers[offerList[i]].sold) {
-                if (i > 0) offerIds = concat(offerIds, ",");
-                offerIds = concat(offerIds, offerList[i]);
-            }
+            if (i > 0) offerIds = concat(offerIds, ",");
+            offerIds = concat(offerIds, offerList[i]);
         }
         return offerIds;
     }
 
-    function exchangePointToPoint (string offerId, uint256 amount) public {
+    function exchangePointToPoint (string offerId) public {
         require(offers[offerId].typ == "buy" || offers[offerId].typ == "sell");
         Offer memory offer = offers[offerId];
 
         if (offer.typ == "sell") { // sender buy
-            exchangeP2P(offer.from, offer.to, offer.creator, msg.sender, amount);
+            exchangeP2P(offer.from, offer.to, offer.creator, msg.sender, offer.amount);
         } else { // sender sell
-            exchangeP2P(offer.to, offer.from, msg.sender, offer.creator, amount);
+            exchangeP2P(offer.to, offer.from, msg.sender, offer.creator, offer.amount);
         }
 
         delete offers[offerId];
