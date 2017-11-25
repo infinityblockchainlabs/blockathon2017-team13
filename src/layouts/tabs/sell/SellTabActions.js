@@ -6,7 +6,6 @@ import contract from 'truffle-contract'
 export const EXCHANGE_GOT_SELL_LIST = 'EXCHANGE_GOT_SELL_LIST'
 
 function getSellListSuccess(sellList) {
-  console.log(sellList)
   return {
     type: EXCHANGE_GOT_SELL_LIST,
     payload: sellList,
@@ -22,27 +21,20 @@ export function getSellList() {
                 const infiniteContract = contract(InfinitePointsContract)
                 infiniteContract.setProvider(web3.currentProvider)
                 const contractInstance = await infiniteContract.deployed()
-
-                dispatch(getSellListSuccess([
-                    {
-                        id: 1,
-                        username: 'Trung Bird',
-                        merchant_icon: 'https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png',
-                        merchant_code: 'LZD',
-                        sell_amount: 1000,
-                        sell_total_price: 100
-                    },
-                    {
-                        id: 2,
-                        username: 'Trung Bird',
-                        merchant_icon: 'https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png',
-                        merchant_code: 'TK',
-                        sell_amount: 2000,
-                        sell_total_price: 300
-                    },
-                ]))
+                const offerIds = await contractInstance.getOfferIds('buy', { from: coinbase })
+                const offers = await Promise.all(offerIds.split(',').map(offerId =>
+                    contractInstance.getOffer(offerId)
+                ))
+                dispatch(getSellListSuccess(offers.map(([name, fromCode,,amount, fromUrl,,fromAmount], id) => ({
+                    id,
+                    username: web3.toUtf8(name),
+                    merchant_icon: fromUrl,
+                    merchant_code: fromCode,
+                    sell_amount: amount.c[0],
+                    sell_total_price: fromAmount.c[0]
+                }))))
             } catch (err) {
-                console.log(err)
+                console.log(err, '@@@@@@')
                 dispatch(setErrorMessage(err.message))
             }
         })

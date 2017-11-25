@@ -34,6 +34,10 @@ class AccountTab extends Component {
     }
   }
 
+  refreshData() {
+    setTimeout(() => this.props.getMerchants(), 500)
+  }
+
   render() {
     return(
       <div>

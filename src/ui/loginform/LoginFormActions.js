@@ -77,7 +77,7 @@ export function restoreSession(cookies) {
     })
 }
 
-export function loginUser(coinbase, cookies) {
+export function loginUser(username, password, cookies) {
   let web3 = store.getState().web3.web3Instance
   if (typeof web3 !== 'undefined') {
     return (async (dispatch) => {
@@ -87,18 +87,40 @@ export function loginUser(coinbase, cookies) {
             const infiniteContract = contract(InfinitePointsContract)
             infiniteContract.setProvider(web3.currentProvider)
             const contractInstance = await infiniteContract.deployed()
-            const accountInfo = await contractInstance.getAccountInfo({ from: coinbase})
+
+            const accounts = web3.eth.accounts
+            let account
+            if (username === 'demo1') {
+                if (password === 'demo') {
+                    account = accounts[1]
+                } else {
+                    dispatch(setLoaderStatus(true))
+                    return dispatch(setErrorMessage('Wrong Password!'))
+                }
+            } else if (username === 'demo2') {
+                if (password === 'demo') {
+                    account = accounts[3]
+                } else {
+                    dispatch(setLoaderStatus(true))
+                    return dispatch(setErrorMessage('Wrong Password!'))
+                }
+            } else {
+                dispatch(setLoaderStatus(true))
+                return dispatch(setErrorMessage('Account does not exists!'))
+            }
+
+            const accountInfo = await contractInstance.getAccountInfo({ from: account })
             const [name, rate, isMerChant, code, url, wCoinBalance] = accountInfo
             console.log(name, rate, isMerChant, code, url, wCoinBalance)
 
             if (cookies) {
-                cookies.set('coinbase', coinbase, { path: '/' })
+                cookies.set('coinbase', account, { path: '/' })
                 cookies.set('accountInfo', {name: web3.toUtf8(name), rate, isMerChant}, { path: '/' })
             }
 
             dispatch(userLoggedIn({
                 name: web3.toUtf8(name),
-                coinbase,
+                coinbase: account,
                 rate: rate.c[0],
                 isMerChant,
                 code,
