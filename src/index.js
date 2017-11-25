@@ -12,6 +12,7 @@ import App from './App'
 import Login from './layouts/login/Login'
 import MainApp from './layouts/MainApp'
 import CreateFakeData from './layouts/CreateFakeData'
+import Redeem from './layouts/redeem/Redeem'
 
 // Merchant Web Demo
 import MerchantDemo from './merchant/MerchantDemo'
@@ -45,6 +46,7 @@ ReactDOM.render((
             <Route path="login" component={UserIsNotAuthenticated(Login)} />
             <Route path="app" component={UserIsAuthenticated(MainApp)} />
             <Route path="fake" component={CreateFakeData} />
+            <Route path="redeem" component={UserIsAuthenticated(Redeem)} />
           </Route>
           <Route path="/merchant" component={MerchantDemo}>
             <IndexRoute component={ProductList} />
