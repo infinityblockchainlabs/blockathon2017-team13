@@ -189,7 +189,7 @@ contract InfinitePoints {
     }
 
     function exchangeP2P(address merchantA, address merchantB, address from, address to, uint256 amount) public {
-        uint256 toAmount = amount * accounts[merchantA].rate / accounts[merchantB].rate;
+        uint256 toAmount = amount * accounts[merchantB].rate / accounts[merchantA].rate;
         require(points[merchantA][from] >= amount);
         require(points[merchantB][to] >= toAmount);
 
