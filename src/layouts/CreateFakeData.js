@@ -36,6 +36,11 @@ const createFakeData = async () => {
       await contractInstance.addPoints(user1, 3000, { from: merchant2 })
       await contractInstance.addPoints(user2, 4000, { from: merchant2 })
 
+      await contractInstance.addWcoins(user1, 1000, { from: ZERO_ACCOUNT })
+      await contractInstance.addWcoins(user2, 2000, { from: ZERO_ACCOUNT })
+      await contractInstance.addWcoins(user1, 3000, { from: ZERO_ACCOUNT })
+      await contractInstance.addWcoins(user2, 4000, { from: ZERO_ACCOUNT })
+
       await contractInstance.createOffer('usr1Buy', 'buy', merchant1, merchant2, 30, { from: user1, gas: 1000000 })
       await contractInstance.createOffer('usr1Sell', 'sell', merchant2, merchant1, 40, { from: user1, gas: 1000000 })
       await contractInstance.createOffer('usr2Buy', 'buy', merchant1, merchant2, 50, { from: user2, gas: 1000000 })
