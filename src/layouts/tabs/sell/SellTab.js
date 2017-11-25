@@ -9,7 +9,11 @@ import './Sell.css'
 
 class SellTab extends Component {
   componentDidMount() {
-    this.props.getSellList()
+    setTimeout(() => this.props.getSellList(), 500)
+  }
+
+  refreshData() {
+    setTimeout(() => this.props.getSellList(), 500)
   }
 
   render() {
@@ -19,6 +23,9 @@ class SellTab extends Component {
       <div>
         <NavBar
           mode="dark"
+          rightContent={[
+            <Icon key={0} type="loading" onClick={() => this.refreshData().bind(this)} />,
+          ]}
         >Sell Now</NavBar>
         <WingBlank>
           <WhiteSpace />

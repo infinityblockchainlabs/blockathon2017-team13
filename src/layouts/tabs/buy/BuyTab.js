@@ -12,6 +12,11 @@ class BuyTab extends Component {
     setTimeout(() => this.props.getBuyList(), 500)
   }
 
+  refreshData() {
+    setTimeout(() => this.props.getBuyList(), 500)
+  }
+
+
   render() {
     const { buyList } = this.props.exchange
     const { wecoinBalance } = this.props.user
@@ -20,6 +25,9 @@ class BuyTab extends Component {
       <div>
         <NavBar
           mode="dark"
+          rightContent={[
+            <Icon key={0} type="loading" onClick={() => this.refreshData().bind(this)} />,
+          ]}
         >Buy Now</NavBar>
         <WingBlank>
           <WhiteSpace />
