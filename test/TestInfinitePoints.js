@@ -5,65 +5,68 @@ contract('InfinitePoints', (accounts) => {
   it("...should add and retrieve points properly.", async () => {
     const infinitePointInstance = await InfinitePoint.deployed();
 
-    await infinitePointInstance.signup("Merchant1", accounts[0], true, 2, "code1", "url1", {from: accounts[0]})
-    await infinitePointInstance.signup("Merchant2", accounts[2], true, 3, "code2", "url2", {from: accounts[0]})
-    await infinitePointInstance.signup("Customer1", accounts[1], false, 0, "", "", {from: accounts[0]})
-    await infinitePointInstance.signup("Customer2", accounts[3], false, 0, "", "", {from: accounts[0]})
+    await infinitePointInstance.signup("Lazada", accounts[0], true, 2, "lzd", "lzd", {from: accounts[0]})
+    await infinitePointInstance.signup("Tiki", accounts[1], true, 3, "tiki", "tiki", {from: accounts[0]})
+    await infinitePointInstance.signup("Ninh", accounts[2], false, 0, "", "", {from: accounts[0]})
+    await infinitePointInstance.signup("Trung", accounts[3], false, 0, "", "", {from: accounts[0]})
 
-    const [name, rate, isMerchant] = await infinitePointInstance.getAccountInfo({from: accounts[2]})
-    assert.equal(rate.c[0], 3, "Get merchant info")
-    assert.equal(isMerchant, true, "Get merchant info")
-    assert.equal(web3.toUtf8(name), "Merchant2", "Get merchant info")
+    const [name, rate, isMerchant] = await infinitePointInstance.getAccountInfo({from: accounts[0]})
+    assert.equal(rate.c[0], 2, "Get Lazada info")
+    assert.equal(isMerchant, true, "Get Lazada info")
+    assert.equal(web3.toUtf8(name), "Lazada", "Get Lazada info")
 
-    await infinitePointInstance.addPoints(accounts[1], 100, {from: accounts[0]})
-    let point = await infinitePointInstance.getMerchantPoints (accounts[0], accounts[1])
-    assert.equal(point[1].c[0], 100, "Get first point")
+    await infinitePointInstance.addPoints(accounts[2], 100, {from: accounts[0]})
+    let point = await infinitePointInstance.getMerchantPoints (accounts[0], accounts[2])
+    assert.equal(point[1].c[0], 100, "Ninh has 100 Lazada Point")
 
-    let merchants = await infinitePointInstance.getMerchants({from: accounts[1]})
-    assert.equal(merchants, accounts[0], "Get first merchants")
+    let merchants = await infinitePointInstance.getMerchants({from: accounts[2]})
+    assert.equal(merchants, accounts[0], "Ninh has Lazada loyalty progam")
 
-    await infinitePointInstance.addPoints(accounts[1], 50, {from: accounts[0]})
-    point = await infinitePointInstance.getMerchantPoints (accounts[0], accounts[1])
-    assert.equal(point[1].c[0], 150, "Get first point")
+    await infinitePointInstance.addPoints(accounts[2], 50, {from: accounts[0]})
+    point = await infinitePointInstance.getMerchantPoints (accounts[0], accounts[2])
+    assert.equal(point[1].c[0], 150, "Ninh has total 150 Lazada point")
 
-    merchants = await infinitePointInstance.getMerchants ({from: accounts[1]})
-    assert.equal(merchants, accounts[0], "Get first merchants")
+    merchants = await infinitePointInstance.getMerchants ({from: accounts[2]})
+    assert.equal(merchants, accounts[0], "Ninh still only join Lazada program")
 
-    await infinitePointInstance.addPoints(accounts[1], 200, {from: accounts[2]})
-    point = await infinitePointInstance.getMerchantPoints (accounts[2], accounts[1])
-    assert.equal(point[1].c[0], 200, "Get second point")
+    await infinitePointInstance.addPoints(accounts[3], 200, {from: accounts[1]})
+    point = await infinitePointInstance.getMerchantPoints (accounts[1], accounts[3])
+    assert.equal(point[1].c[0], 200, "Trung has 200 Tiki point")
     
-    merchants = await infinitePointInstance.getMerchants ({from: accounts[1]})
-    assert.equal(merchants, `${accounts[0]},${accounts[2]}`, "Get all merchants")
+    merchants = await infinitePointInstance.getMerchants ({from: accounts[3]})
+    assert.equal(merchants, `${accounts[1]}`, "Get Trung's loyalty program")
 
-    await infinitePointInstance.addPoints(accounts[3], 300, {from: accounts[2]})
-    point = await infinitePointInstance.getMerchantPoints (accounts[2], accounts[3])
-    assert.equal(point[1].c[0], 300, "Get 3rd point")
+    await infinitePointInstance.addPoints(accounts[3], 300, {from: accounts[0]})
+    point = await infinitePointInstance.getMerchantPoints (accounts[0], accounts[3])
+    assert.equal(point[1].c[0], 300, "Trung got 300 Lazada point")
 
-    let wcoin1 = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[1]})
-    let wcoin2 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
-    assert.equal(wcoin1.c[0], 300, "Get wcoin point")
-    assert.equal(wcoin2.c[0], 900, "Get wcoin point")
+    let ninhWCoin = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[2]})
+    let trungWCoin1 = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[3]})
+    let trungWcoin2 = await infinitePointInstance.getWCoin(accounts[1], {from: accounts[3]})
+    assert.equal(ninhWCoin.c[0], 300, "Ninh has 150 lzd point -> 300 wcoin")
+    assert.equal(trungWCoin1.c[0], 600, "Trung has 300 lzd point -> 600 wcoin")
+    assert.equal(trungWcoin2.c[0], 600, "Trung has 200 tiki point -> 600 wcoin")
 
     // create offer
-    await infinitePointInstance.createOffer("unique_id_01", "sell", accounts[2], accounts[0], 100, {from: accounts[3]})
-    let offer = await infinitePointInstance.getOffer("unique_id_01")
-    assert.equal(offer[0], accounts[3], "Creator is 3rd")
-    assert.equal(offer[1], accounts[2], "Sell merchant 2 to merchant 1")
-    assert.equal(offer[2], accounts[0], "Sell merchant 2 to merchant 1")
-    assert.equal(offer[3], 100, "Amount of transfer")
+    await infinitePointInstance.createOffer("unique_id_01", "sell", accounts[1], accounts[0], 100, {from: accounts[3]})
+    
+    // before transfer
+    let nlzdWCoinBft = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[2]})
+    let tlzdWCoinBft = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[3]})
+    let ttikWCoinBft = await infinitePointInstance.getWCoin(accounts[1], {from: accounts[3]})
+    assert(nlzdWCoinBft.c[0], 300, "Ninh has lzd point relevance to 300 wcoin")
+    assert(tlzdWCoinBft.c[0], 600, "Trung has lzd point relevance to 600 wcoin")
+    assert(ttikWCoinBft.c[0], 600, "Trung has tiki point relevance to 600 wcoin")
+    
+    // transfer 100 tiki point to get 150 Lazada point
+    await infinitePointInstance.exchangePointToPoint("unique_id_01", {from: accounts[2]})
 
-    // account 0 come and take account 2
-    let wcoin3 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[1]})
-    let wcoin4 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
-    console.log(wcoin3.c[0])
-    console.log(wcoin4.c[0])
-
-    await infinitePointInstance.exchangePointToPoint("unique_id_01", {from: accounts[1]})
-
-    let wcoin5 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[1]})
-    let wcoin6 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
-    console.log(wcoin5.c[0])
-    console.log(wcoin6.c[0])
+    // after transfer
+    let nlzdWCoinAft = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[2]})
+    let tlzdWCoinAft = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[3]})
+    let ttikWCoinAft = await infinitePointInstance.getWCoin(accounts[1], {from: accounts[3]})
+    console.log("After Ninh has lzd point", nlzdWCoinAft.c[0])
+    console.log("After Trung has lzd point", tlzdWCoinAft.c[0])
+    console.log("After Trung has tiki point", ttikWCoinAft.c[0])
   })
 })
