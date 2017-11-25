@@ -35,7 +35,7 @@ class BuyTab extends Component {
                 key={i.id}
                 thumb={i.merchant_icon}
                 extra={<Button type="primary">Buy</Button>}
-                onClick={() => {}}
+                onClick={() => this.props.buyOffer(i.id)}
                 multipleLine
                 wrap
               >{i.username}<br/>
