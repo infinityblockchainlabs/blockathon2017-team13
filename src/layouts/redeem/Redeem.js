@@ -5,9 +5,10 @@ import { Link } from 'react-router-redux'
 import store from '../../store'
 import contract from 'truffle-contract'
 import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
+import { unlockAccount } from '../../ui/loginform/LoginFormActions'
 
 import { NavBar, WingBlank, Icon, WhiteSpace, Card, Button, List, Modal } from 'antd-mobile'
-import { merchant1 } from '../../constants'
+import { merchant1, ZERO_ACCOUNT } from '../../constants'
 
 class Redeem extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class Redeem extends Component {
     if (points > 5000) {
       this.setState({ modalNotEnoughPoints: true })
     } else {
-      this.props.redeem()
+      this.props.redeem(points)
     }
   }
 
@@ -110,6 +111,8 @@ function redeemPoints(points) {
         const infiniteContract = contract(InfinitePointsContract)
         infiniteContract.setProvider(web3.currentProvider)
         const contractInstance = await infiniteContract.deployed()
+
+        await unlockAccount(merchant1, 'testaccteamweup')
         await contractInstance.subPoints(coinbase, points, { from: merchant1 })
         
         browserHistory.goBack()
@@ -128,7 +131,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    redeem: () => { dispatch(redeemPoints()) }
+    redeem: (points) => { dispatch(redeemPoints(points)) }
   }
 }
 

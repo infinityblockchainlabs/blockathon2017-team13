@@ -16,7 +16,12 @@ class AccountTab extends Component {
   }
 
   componentDidMount() {
-    this.refreshData()
+    setTimeout(() => this.refreshData(), 500)
+  }
+
+  refreshData() {
+    this.props.getAccountInfo()
+    this.props.getMerchants()
   }
 
   showModal(key) {
@@ -36,19 +41,12 @@ class AccountTab extends Component {
     }
   }
 
-  refreshData() {
-    setTimeout(() => {
-      this.props.getAccountInfo()
-      this.props.getMerchants()
-    }, 500)
-  }
-
   render() {
     return (
       <div>
         <NavBar
           mode="dark"
-          rightContent={<Icon type="loading" onClick={() => this.refreshData().bind(this)}/>}
+          rightContent={<Icon type="loading" onClick={() => this.refreshData()}/>}
         >Account</NavBar>
         <WingBlank>
           <WhiteSpace />
@@ -73,7 +71,9 @@ class AccountTab extends Component {
             </Item>
             {this.props.merchants.map((m, index) => {
               return (
-                <Item extra={m.points + ' pts'} key={index}>{m.name}</Item>
+                <Item extra={m.points + ' pts'} key={index}
+                  arrow="horizontal"
+                  onClick={() => browserHistory.push('/redeem')}>{m.name}</Item>
               )
             })}
 
@@ -89,7 +89,7 @@ class AccountTab extends Component {
             <List renderHeader={() => <div>Information</div>} className="popup-list">
               <List.Item key={1} multipleLine={true}>Place holder</List.Item>
               <List.Item key={2}>
-                <Button type="primary" onClick={this.onClose('modalCoinIncrement').bind(this)}>OK</Button>
+                <Button type="primary" onClick={() => this.onClose('modalCoinIncrement')}>OK</Button>
               </List.Item>
             </List>
           </Modal>

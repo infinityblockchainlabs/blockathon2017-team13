@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import store from '../store'
 import contract from 'truffle-contract'
 import InfinitePointsContract from '../../build/contracts/InfinitePoints.json'
+import { unlockAccount } from '../ui/loginform/LoginFormActions'
 
-import { user1, merchant1 } from '../constants'
+import { user1, merchant1, ZERO_ACCOUNT } from '../constants'
 
 class PurchasedSuccess extends Component {
   componentDidMount() {
@@ -44,6 +45,7 @@ function purchaseItem() {
         const infiniteContract = contract(InfinitePointsContract)
         infiniteContract.setProvider(web3.currentProvider)
         const contractInstance = await infiniteContract.deployed()
+        await unlockAccount(merchant1, 'testaccteamweup')
         await contractInstance.addPoints(user1, 3000, { from: merchant1 })
       } catch (err) {
         console.error(err)
