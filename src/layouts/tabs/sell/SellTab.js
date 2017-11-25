@@ -24,9 +24,9 @@ class SellTab extends Component {
         <NavBar
           mode="dark"
           rightContent={[
-            <Icon type="loading" onClick={() => this.refreshData().bind(this)} />,
+            <Icon key={0} type="loading" onClick={() => this.refreshData().bind(this)} />,
           ]}
-        >Sell</NavBar>
+        >Sell Now</NavBar>
         <WingBlank>
           <WhiteSpace />
           <List renderHeader="" className="my-list">

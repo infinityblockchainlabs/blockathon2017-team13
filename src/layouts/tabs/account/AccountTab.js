@@ -13,8 +13,9 @@ class AccountTab extends Component {
       modalCoinIncrement: false
     }
   }
+
   componentDidMount() {
-    setTimeout(() => this.props.getMerchants(), 500)
+    this.refreshData()
   }
 
   showModal (key) {
@@ -35,7 +36,10 @@ class AccountTab extends Component {
   }
 
   refreshData() {
-    setTimeout(() => this.props.getMerchants(), 500)
+    setTimeout(() => {
+      this.props.getAccountInfo()
+      this.props.getMerchants()
+    }, 500)
   }
 
   render() {
@@ -43,9 +47,7 @@ class AccountTab extends Component {
       <div>
         <NavBar
           mode="dark"
-          rightContent={[
-            <Icon key="0" type="ellipsis" />,
-          ]}
+          rightContent={<Icon type="loading" onClick={() => this.refreshData().bind(this)} />}
         >Account</NavBar>
         <WingBlank>
           <List renderHeader="" className="my-list">
