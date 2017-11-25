@@ -1,16 +1,17 @@
-import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
+import React, {Component} from 'react'
+import {browserHistory} from 'react-router'
 
-import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, Modal } from 'antd-mobile'
+import {NavBar, WingBlank, WhiteSpace, Icon, List, Button, Modal, Card} from 'antd-mobile'
 import LogoutButton from '../../../ui/logoutbutton/LogoutButtonContainer'
-
-const { Item, Brief } = List
+import './account.css'
+const {Item, Brief} = List
 
 class AccountTab extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalCoinIncrement: false
+      modalCoinIncrement: false,
+      modalLogOut: false
     }
   }
 
@@ -18,7 +19,7 @@ class AccountTab extends Component {
     this.refreshData()
   }
 
-  showModal (key) {
+  showModal(key) {
     return (e) => {
       e.preventDefault();
       this.setState({
@@ -27,7 +28,7 @@ class AccountTab extends Component {
     }
   }
 
-  onClose (key) {
+  onClose(key) {
     return () => {
       this.setState({
         [key]: false,
@@ -43,31 +44,41 @@ class AccountTab extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
         <NavBar
           mode="dark"
-          rightContent={<Icon type="loading" onClick={() => this.refreshData().bind(this)} />}
+          rightContent={<Icon type="loading" onClick={() => this.refreshData().bind(this)}/>}
         >Account</NavBar>
         <WingBlank>
-          <List renderHeader="" className="my-list">
-            <Item extra={this.props.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
-              {this.props.data.name} 
-            </Item>
-          </List>
           <WhiteSpace />
-          <List renderHeader='Collected Points' className="point-list">
-            {this.props.merchants.map((m) => {
+          <Card>
+            <Card.Header
+              title={this.props.data.name}
+              thumb={<img src="/images/avatar.png" width="80px" alt="" />}
+              extra={<img src="/images/logout-2.svg" alt="" onClick={this.showModal('modalLogOut')}/>}
+            />
+            <Card.Body>
+              <div style={{textAlign: 'center'}}>
+                <span>{this.props.wecoinBalance}</span><span> WeCoin</span></div>
+            </Card.Body>
+          </Card>
+          <WhiteSpace />
+          <List className="point-list">
+            <Item extra={<Button size="small" type="primary"
+                                 onClick={this.showModal('modalCoinIncrement')}
+                                 icon={<img src="/images/link-3.svg" alt="" />}
+                                 style={{width: 90, float: 'right'}}>Add</Button>} key={'header'}>
+              <span style={{fontSize: 17, fontWeight: 400}}>Collected Points</span>
+            </Item>
+            {this.props.merchants.map((m, index) => {
               return (
-                <Item extra={m.points} key={m.name}>{m.name}</Item>
+                <Item extra={m.points + ' pts'} key={index}>{m.name}</Item>
               )
             })}
-            
+
           </List>
           <WhiteSpace />
-          <Button type="primary" onClick={this.showModal('modalCoinIncrement')}>Link new site</Button>
-          <WhiteSpace />
-          <LogoutButton />
 
           <Modal
             popup
@@ -76,9 +87,25 @@ class AccountTab extends Component {
             animationType="slide-up"
           >
             <List renderHeader={() => <div>Information</div>} className="popup-list">
-              <List.Item multipleLine={true}>You have 10 points more from Lezede</List.Item>
-              <List.Item>
-                <Button type="primary" onClick={this.onClose('modalCoinIncrement').bind(this)}>Ok</Button>
+              <List.Item key={1} multipleLine={true}>Place holder</List.Item>
+              <List.Item key={2}>
+                <Button type="primary" onClick={this.onClose('modalCoinIncrement').bind(this)}>OK</Button>
+              </List.Item>
+            </List>
+          </Modal>
+
+          <Modal
+            popup
+            visible={this.state.modalLogOut}
+            maskClosable={false}
+            animationType="slide-up"
+          >
+            <List renderHeader={() => <div>Log Out?</div>} className="popup-list">
+              <List.Item key={1} multipleLine={true}>
+                <Button type="default" onClick={this.onClose('modalLogOut').bind(this)}>Cancel</Button>
+              </List.Item>
+              <List.Item key={2}>
+                <LogoutButton />
               </List.Item>
             </List>
           </Modal>

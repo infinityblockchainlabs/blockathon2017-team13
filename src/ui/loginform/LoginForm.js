@@ -19,10 +19,8 @@ class LoginForm extends Component {
     this.setState({isLoaded: props.isLoaded})
   }
 
-    submit() {
-        this.props.form.validateFields((error, value) => {
-
-
+  submit() {
+    this.props.form.validateFields((error, value) => {
       const {username, password} = value
 
       if (username.length < 3) {
