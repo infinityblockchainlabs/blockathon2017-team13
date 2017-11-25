@@ -11,8 +11,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const { cookies } = ownProps
 
   return {
-    onLoginUserClick: (coinbase) => {
-      dispatch(loginUser(coinbase, cookies))
+    onLoginUserClick: (username, password) => {
+      dispatch(loginUser(username, password, cookies))
     }
   }
 }
