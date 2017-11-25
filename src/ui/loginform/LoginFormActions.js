@@ -62,7 +62,7 @@ export function restoreSession(cookies) {
             dispatch(userLoggedIn({
                 name,
                 coinbase,
-                rate: rate,
+                rate,
                 isMerChant
             }))
 
@@ -88,7 +88,8 @@ export function loginUser(coinbase, cookies) {
             infiniteContract.setProvider(web3.currentProvider)
             const contractInstance = await infiniteContract.deployed()
             const accountInfo = await contractInstance.getAccountInfo({ from: coinbase})
-            const [name, rate, isMerChant] = accountInfo
+            const [name, rate, isMerChant, code, url, wCoinBalance] = accountInfo
+            console.log(name, rate, isMerChant, code, url, wCoinBalance)
 
             if (cookies) {
                 cookies.set('coinbase', coinbase, { path: '/' })
@@ -99,7 +100,10 @@ export function loginUser(coinbase, cookies) {
                 name: web3.toUtf8(name),
                 coinbase,
                 rate: rate.c[0],
-                isMerChant
+                isMerChant,
+                code,
+                url,
+                wCoinBalance: wCoinBalance.c[0]
             }))
             const currentLocation = browserHistory.getCurrentLocation()
 

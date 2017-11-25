@@ -3,7 +3,7 @@ import { Button } from 'antd-mobile'
 
 const LogoutButton = ({ onLogoutUserClick }) => {
   return(
-    <Button onClick={(event) => onLogoutUserClick(event)}>Logout</Button>
+    <Button type="warning" onClick={(event) => onLogoutUserClick(event)}>Logout</Button>
   )
 }
 

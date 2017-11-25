@@ -25,8 +25,8 @@ export function getMerchants() {
                 const merchants = await Promise.all(merChantIds.split(',').map(merchant =>
                     contractInstance.getMerchantPoints(merchant, coinbase)
                 ))
-                dispatch(getMerchantsSuccess(merchants.map(([name, point]) => {
-                    return { name: web3.toUtf8(name), points: point.c[0] };
+                dispatch(getMerchantsSuccess(merchants.map(([name, point, code, url]) => {
+                    return { name: web3.toUtf8(name), points: point.c[0], code, url };
                 })))
             } catch (err) {
                 console.log(err)

@@ -17,6 +17,8 @@ contract InfinitePoints {
       bytes32 name;
       bool isMerchant;
       uint256 rate;
+      string code;
+      string url;
     }
     mapping (address => Account) private accounts;
 
@@ -56,7 +58,7 @@ contract InfinitePoints {
         return concat("0x", string(s));
     }
 
-    function signup(bytes32 name, address eth, bool isMerchant, uint256 rate) returns (address) {
+    function signup(bytes32 name, address eth, bool isMerchant, uint256 rate, string code, string url) returns (address) {
         require(!isMerchant || rate >= 1);
 
         if (accounts[eth].name == 0x0) {
@@ -64,6 +66,8 @@ contract InfinitePoints {
             accounts[eth].isMerchant = isMerchant;
             if (isMerchant) {
                 accounts[eth].rate = rate;
+                accounts[eth].code = code;
+                accounts[eth].url = url;
             }
             return (eth);
         }
@@ -71,9 +75,9 @@ contract InfinitePoints {
         return (eth);
     }
 
-    function getAccountInfo () constant public returns (bytes32, uint256, bool) {
-        Account memory acc = accounts[msg.sender];
-        return (acc.name, acc.rate, acc.isMerchant);
+    function getAccountInfo () constant public returns (bytes32, uint256, bool, string, string, uint256) {
+        Account acc = accounts[msg.sender];
+        return (acc.name, acc.rate, acc.isMerchant, acc.code, acc.url, wcoins[msg.sender]);
     }
 
     function addPoints (address customer, uint256 point) public {
