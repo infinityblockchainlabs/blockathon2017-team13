@@ -62,7 +62,7 @@ export function restoreSession(cookies) {
             dispatch(userLoggedIn({
                 name,
                 coinbase,
-                rate: rate,
+                rate,
                 isMerChant
             }))
 
