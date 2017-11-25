@@ -100,8 +100,8 @@ contract InfinitePoints {
         points[msg.sender][customer] -= point;
     }
     
-    function getPoints (address merchant, address customer) constant public returns (uint256) {
-        return points[merchant][customer];
+    function getMerchantPoints (address merchant, address customer) constant public returns (bytes32, uint256) {
+        return (accounts[merchant].name, points[merchant][customer]);
     }
 
     function getMerchants () constant public returns (string) {
