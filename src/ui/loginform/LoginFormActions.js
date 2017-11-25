@@ -1,5 +1,5 @@
-import AuthenticationContract from '../../../build/contracts/Authentication.json'
-import CryptoLicenseToken from '../../../build/contracts/CryptoLicenseToken.json'
+import AuthenticationContract from '../../../build/contracts/InfinitePoints.json'
+import CryptoLicenseToken from '../../../build/contracts/InfinitePoints.json'
 import { getEtherBalance } from '../profileform/ProfileFormActions'
 import { browserHistory } from 'react-router'
 import store from '../../store'
