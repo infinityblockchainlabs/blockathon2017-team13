@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, Modal } from 'antd-mobile'
 import LogoutButton from '../../../ui/logoutbutton/LogoutButtonContainer'
 
-const Item = List.Item
+const { Item, Brief } = List
 
 class AccountTab extends Component {
   constructor(props) {
@@ -44,7 +44,12 @@ class AccountTab extends Component {
           ]}
         >Account</NavBar>
         <WingBlank>
-          <h1>Hi {this.props.data.name}</h1>
+          <List renderHeader="" className="my-list">
+            <Item extra={this.props.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
+              {this.props.data.name} 
+            </Item>
+          </List>
+          <WhiteSpace />
           <List renderHeader='Collected Points' className="point-list">
             {this.props.merchants.map((m) => {
               return (

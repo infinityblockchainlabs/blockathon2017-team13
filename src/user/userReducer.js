@@ -1,5 +1,6 @@
 const initialState = {
   data: null,
+  wecoinBalance: 100,
   merchants: [],
   errorMessage: null,
   infoMessage: null,
