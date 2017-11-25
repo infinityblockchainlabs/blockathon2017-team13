@@ -48,7 +48,7 @@ class AccountTab extends Component {
       <div>
         <NavBar
           mode="dark"
-          rightContent={<Icon type="loading" onClick={() => this.refreshData().bind(this)}/>}
+          rightContent={<img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData().bind(this)}/>}
         >Account</NavBar>
         <WingBlank>
           <WhiteSpace />
@@ -59,17 +59,17 @@ class AccountTab extends Component {
               extra={<img src="/images/logout-2.svg" alt="" onClick={this.showModal('modalLogOut')}/>}
             />
             <Card.Body>
-              <div style={{textAlign: 'center'}}>
-                <span>{this.props.wecoinBalance}</span><span> WeCoin</span></div>
+              <div style={{textAlign: 'center', fontSize: 16}}>
+                <span style={{color: 'red'}}>{this.props.wecoinBalance}</span><span> WeCoin</span></div>
             </Card.Body>
           </Card>
           <WhiteSpace />
           <List className="point-list">
-            <Item extra={<Button size="small" type="primary"
+            <Item extra={<Button size="small" type="ghost"
                                  onClick={this.showModal('modalCoinIncrement')}
                                  icon={<img src="/images/link-3.svg" alt="" />}
                                  style={{width: 90, float: 'right'}}>Add</Button>} key={'header'}>
-              <span style={{fontSize: 17, fontWeight: 400}}>Collected Points</span>
+              <span style={{fontSize: 18, fontWeight: 600}}>Collected Points</span>
             </Item>
             {this.props.merchants.map((m, index) => {
               return (

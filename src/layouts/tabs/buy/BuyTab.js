@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
+import React, {Component} from 'react'
+import {browserHistory} from 'react-router'
 
-import { NavBar, WingBlank, WhiteSpace, Icon, List, Button, Badge } from 'antd-mobile'
+import {NavBar, WingBlank, WhiteSpace, Icon, List, Button, Badge, Card} from 'antd-mobile'
 
-const { Item, Brief } = List
+const {Item, Brief} = List
 
 import './Buy.css'
 
@@ -18,45 +18,41 @@ class BuyTab extends Component {
 
 
   render() {
-    const { buyList } = this.props.exchange
-    
-    return(
+    const {buyList} = this.props.exchange
+
+    return (
       <div>
         <NavBar
           mode="dark"
           rightContent={[
-            <Icon key={0} type="loading" onClick={() => this.refreshData().bind(this)} />,
+            <img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData().bind(this)}/>,
           ]}
         >Buy Now</NavBar>
         <WingBlank>
           <WhiteSpace />
-          <List renderHeader="" className="my-list">
-            <Item extra={this.props.user.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
-              {this.props.user.data.name} 
-            </Item>
-          </List>
+          <div className="wecoin">
+            <span>{this.props.user.wecoinBalance}</span> WeCoin</div>
           <WhiteSpace />
           {buyList && buyList.length > 0 && <List>
             {buyList.map(i => (
-              <Item
+              <Item style={{fontSize: 14}}
                 key={i.id}
-                thumb={i.merchant_icon}
-                extra={<Button type="primary">Buy</Button>}
+                // thumb={i.merchant_icon}
+                extra={<Button type="primary" style={{width: 70, float: 'right'}}>Buy</Button>}
                 onClick={() => this.props.buyOffer(i.id)}
                 multipleLine
-                wrap
-              >{i.username}<br/>
-                <span className="item-buy-amount">buys <strong>{i.buy_amount} {i.merchant_code}
-                  pts.</strong></span><br/>
-                <span className="item-buy-price">Price: <strong>{i.buy_total_price} WeCoin</strong></span><br/>
+                wrap>
+                <span style={{fontSize: 12, color: 'gray'}}><strong>{i.username}</strong> wants to sell</span><br/>
+                <span className="item-buy-amount"><strong>{i.buy_amount} {i.merchant_code}</strong> points</span><br/>
+                <span className="item-buy-price">for <strong>{i.buy_total_price} WeCoin</strong></span>
               </Item>
             ))}
           </List>
           }
         </WingBlank>
-      </div>
-    )
-  }
-}
+        </div>
+        )
+        }
+        }
 
-export default BuyTab
+        export default BuyTab

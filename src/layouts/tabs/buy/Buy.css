@@ -5,3 +5,16 @@ span.item-buy-amount {
 span.item-buy-price {
   font-size: 0.8em;
 }
+
+.wecoin {
+  text-align: center;
+  border: 1PX solid #ddd;
+  border-radius: 4px;
+  height: 45px;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.wecoin span {
+  color: red;
+}

@@ -10,14 +10,14 @@ class AdvertiseTab extends Component {
       <div>
         <NavBar
           mode="dark"
+          rightContent={[
+            <img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData().bind(this)}/>,
+          ]}
         >Advertisement</NavBar>
         <WingBlank>
           <WhiteSpace />
-          <List renderHeader="" className="my-list">
-            <Item extra={this.props.user.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
-              {this.props.user.data.name}
-            </Item>
-          </List>
+          <div className="wecoin">
+            <span>{this.props.user.wecoinBalance}</span> WeCoin</div>
           <WhiteSpace />
         </WingBlank>
       </div>

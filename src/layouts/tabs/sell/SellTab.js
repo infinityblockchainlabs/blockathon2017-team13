@@ -24,29 +24,26 @@ class SellTab extends Component {
         <NavBar
           mode="dark"
           rightContent={[
-            <Icon key={0} type="loading" onClick={() => this.refreshData().bind(this)} />,
+            <img src="/images/synchronize-3.svg" alt="" onClick={() => this.refreshData().bind(this)}/>,
           ]}
         >Sell Now</NavBar>
         <WingBlank>
           <WhiteSpace />
-          <List renderHeader="" className="my-list">
-            <Item extra={this.props.user.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
-              {this.props.user.data.name} 
-            </Item>
-          </List>
+          <div className="wecoin">
+            <span>{this.props.user.wecoinBalance}</span> WeCoin</div>
           <WhiteSpace />
           <List>
             {sellList.map(i => (
               <Item
                 key={i.id}
-                thumb={i.merchant_icon}
-                extra={<Button type="warning">Sell</Button>}
+                // thumb={i.merchant_icon}
+                extra={<Button type="warning" inline style={{width: 70, float: 'right'}}>Sell</Button>}
                 onClick={() => this.props.sellOffer(i.id)}
                 multipleLine
-                wrap
-              >{i.username}<br/>
-                <span className="item-sell-amount">buys <strong>{i.sell_amount} {i.merchant_code} pts.</strong></span><br/>
-                <span className="item-sell-price">Price: <strong>{i.sell_total_price} WeCoin</strong></span><br/>
+                wrap>
+                <span style={{fontSize: 12, color: 'gray'}}><strong>{i.username}</strong> wants to buy</span><br/>
+                <span className="item-sell-amount"><strong>{i.sell_amount} {i.merchant_code}</strong> points</span><br/>
+                <span className="item-sell-price">with <strong>{i.sell_total_price} WeCoin</strong></span>
               </Item>
             ))}
           </List>
