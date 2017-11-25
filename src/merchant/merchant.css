@@ -1,0 +1,26 @@
+.custom-image img {
+  display: block;
+  padding: 10px;
+}
+.custom-card {
+  padding: 10px;
+}
+.custom-card p {
+  color: #D4232B;
+}
+.product-card:hover .custom-card-footer button {
+  visibility: visible;
+  transition:opacity 0s linear;
+}
+.custom-card-footer {
+  padding-right: 10px;
+  padding-bottom: 10px;
+  float: right;
+}
+.custom-card-footer button{
+  visibility: hidden;
+  transition:opacity 0s linear;
+}
+.ant-menu-horizontal {
+  border: none !important;
+}
