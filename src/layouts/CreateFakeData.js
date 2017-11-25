@@ -18,12 +18,12 @@ const createFakeData = async () => {
 
       const [weUp, user1, merchant1, user2, merchant2] = [accounts[0], accounts[1], accounts[2], accounts[3], accounts[4]]
 
-      await contractInstance.signup('Weup', weUp, true, 1, { from: ZERO_ACCOUNT })
-      await contractInstance.signup('User 1', user1, false, 0, { from: ZERO_ACCOUNT })
-      await contractInstance.signup('Merchant 1', merchant1, true, 2, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('Weup', weUp, true, 1, 'WEUP', 'https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png', { from: ZERO_ACCOUNT, gas: 1000000 })
+      await contractInstance.signup('User 1', user1, false, 0, 'null', 'null', { from: ZERO_ACCOUNT, gas: 1000000 })
+      await contractInstance.signup('Merchant 1', merchant1, true, 2, 'MCN1', 'https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png', { from: ZERO_ACCOUNT, gas: 1000000 })
 
-      await contractInstance.signup('User 2', user2, false, 0, { from: ZERO_ACCOUNT })
-      await contractInstance.signup('Merchant 2', merchant2, true, 2, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('User 2', user2, false, 0, 'null', 'null', { from: ZERO_ACCOUNT, gas: 1000000 })
+      await contractInstance.signup('Merchant 2', merchant2, true, 2, 'MCN2', 'https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png', { from: ZERO_ACCOUNT, gas: 1000000 })
 
       console.log('Weup: ', weUp)
       console.log('User 1: ', user1)
