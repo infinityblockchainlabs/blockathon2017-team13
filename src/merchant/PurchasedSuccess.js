@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {Card, Row, Col, Icon} from 'antd'
 import { connect } from 'react-redux'
 import store from '../store'
-import { browserHistory } from 'react-router'
 import contract from 'truffle-contract'
 import InfinitePointsContract from '../../build/contracts/InfinitePoints.json'
 
@@ -37,28 +36,32 @@ class PurchasedSuccess extends Component {
   }
 }
 
+function purchaseItem() {
+  let web3 = store.getState().web3.web3Instance
+  if (typeof web3 !== 'undefined') {
+    return (async (dispatch, getState) => {
+      try {
+        const infiniteContract = contract(InfinitePointsContract)
+        infiniteContract.setProvider(web3.currentProvider)
+        const contractInstance = await infiniteContract.deployed()
+        await contractInstance.addPoints(user1, 3000, { from: merchant1 })
+      } catch (err) {
+        console.error(err)
+      }
+      
+    })
+  } else {
+    console.error('Web3 is not initialized.');
+  }
+}
+
 const mapStateToProps = (state) => {
   return state
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    purchase: () => {
-      let web3 = store.getState().web3.web3Instance
-      if (typeof web3 !== 'undefined') {
-        return (async (dispatch, getState) => {
-          const infiniteContract = contract(InfinitePointsContract)
-          infiniteContract.setProvider(web3.currentProvider)
-          const contractInstance = await infiniteContract.deployed()
-
-          await contractInstance.addPoints(user1, 3000, { from: merchant1 })
-
-          browserHistory.push('/merchants/purchased')
-        })
-      } else {
-        console.error('Web3 is not initialized.');
-      }
-    }
+    purchase: () => { dispatch(purchaseItem()) }
   }
 }
 
