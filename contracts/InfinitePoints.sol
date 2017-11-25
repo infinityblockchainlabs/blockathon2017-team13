@@ -118,6 +118,7 @@ contract InfinitePoints {
     }
 
     function getWCoin (address merchant) public returns (uint256) {
+        return points[merchant][msg.sender];
         require(points[merchant][msg.sender] > 0);
         uint256 rate = getMerchantRate(merchant);
         return points[merchant][msg.sender] * rate;
