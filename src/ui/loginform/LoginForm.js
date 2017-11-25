@@ -22,13 +22,13 @@ class LoginForm extends Component {
         this.props.form.validateFields((error, value) => {
             console.log(error, value);
 
-            const { username } = value
+            const { username, password } = value
             
-            if (username.length < 2) {
-                return alert('Please fill in valid username (Ethereum address).')
+            if (username.length < 3) {
+                return alert('Please fill in valid username')
             }
     
-            this.props.onLoginUserClick(username)
+            this.props.onLoginUserClick(username, password)
         });
     }
 
@@ -44,13 +44,14 @@ class LoginForm extends Component {
                         <InputItem
                             {...getFieldProps('username')}
                             clear
-                            placeholder="Enter ethereum address"
+                            placeholder="Enter username"
                         >Username</InputItem>
-                        {/* <InputItem
+                        <InputItem
                             {...getFieldProps('password')}
+                            type="password"
                             clear
                             placeholder="Enter passsword"
-                        >Password</InputItem> */}
+                        >Password</InputItem>
                         <List.Item>
                             <Button type="ghost" onClick={() => this.submit() }>Login</Button>
                         </List.Item>
