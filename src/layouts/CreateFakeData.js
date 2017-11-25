@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'antd-mobile'
 import InfinitePointsContract from '../../build/contracts/InfinitePoints.json'
 import store from '../store'
+const contract = require('truffle-contract')
 
-const createFakeData = () => {
+
+const createFakeData = async () => {
   let web3 = store.getState().web3.web3Instance
-  const ZERO_ACCOUNT = '0x4be9663dfbcec3c0f009a0959764c340219ec8c1'
 
-  return (async (dispatch) => {
-    const contract = contract(InfinitePointsContract)
-    contract.setProvider(web3.currentProvider)
-    const contractInstance = await contract.deployed()
-
-    contractInstance.signup('WeUP', '0x4be9663dfbcec3c0f009a0959764c340219ec8c1',
+  // Create fake data
+  const ZERO_ACCOUNT = '0x5aa875e1ec71a37d671c7c25cae43d7e7e4d5830'
+  const infiniteContract = contract(InfinitePointsContract)
+  infiniteContract.setProvider(web3.currentProvider)
+  const contractInstance = await infiniteContract.deployed()
+  await contractInstance.signup('WeUP', '0x5aa875e1ec71a37d671c7c25cae43d7e7e4d5830',
       true, 1, { from: ZERO_ACCOUNT })
-    contractInstance.signup('Lezede', '0xb4537b92f071b6fe4ac6bf4b484367c681a67135',
+  await contractInstance.signup('Lezede', '0x2d1d9f60c037b1775395100b075a9b69bf3e84f1',
       true, 2, { from: ZERO_ACCOUNT })
-  })
 }
 
 const mapStateToProps = (state) => {
@@ -25,22 +26,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    
+    createFakeData: createFakeData
   }
 }
 
-
 class CreateFakeData extends Component {
-  componentDidMount() {
-    this.props.createFakeData()
-  }
-
   render() {
     return (
-      <div>Generated data</div>
+      <Button onClick={() => this.props.createFakeData()}>Fake Data</Button>
     )
   }
-
 }
 
 export default connect(

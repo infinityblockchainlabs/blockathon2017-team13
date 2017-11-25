@@ -39,7 +39,7 @@ export function setLoaderStatus(isLoaded) {
 }
 
 export const unlockAccount = (account, password) => new Promise((resolve, reject) => {
-    let web3 = store.getState().web3.web3Instance
+    let web3 = 'store'.getState().web3.web3Instance
     if (typeof web3 !== 'undefined') {
         web3.personal.unlockAccount(account, password, (err) => {
             if (err) return reject(err)
@@ -57,7 +57,6 @@ export function restoreSession(cookies) {
         const coinbase = cookies.get('coinbase')
         const accountInfo = cookies.get('accountInfo')
         const {name, rate, isMerChant} = accountInfo
-        console.log(accountInfo)
 
         if (coinbase && coinbase.length > 0 && accountInfo) {
             dispatch(userLoggedIn({
@@ -90,8 +89,6 @@ export function loginUser(coinbase, cookies) {
             const contractInstance = await infiniteContract.deployed()
             const accountInfo = await contractInstance.getAccountInfo({ from: coinbase})
             const [name, rate, isMerChant] = accountInfo
-            console.log(accountInfo)
-            console.log(web3.toUtf8(name))
 
             if (cookies) {
                 cookies.set('coinbase', coinbase, { path: '/' })

@@ -47,7 +47,6 @@ contract InfinitePoints {
     }
 
     function signup(bytes32 name, address eth, bool isMerchant, uint256 rate) returns (address) {
-        require(!isMerchant || msg.sender == owner);
         require(!isMerchant || rate >= 1);
 
         if (accounts[eth].name == 0x0) {

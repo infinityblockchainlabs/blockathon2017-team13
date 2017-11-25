@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 
-import { NavBar, WingBlank, Icon } from 'antd-mobile'
+import { NavBar, WingBlank, WhiteSpace, Icon, List } from 'antd-mobile'
 import LogoutButton from '../../../ui/logoutbutton/LogoutButtonContainer'
 
+const Item = List.Item
+
 class AccountTab extends Component {
+  componentDidMount() {
+    this.props.getMerchants()
+  }
+
   render() {
     return(
       <div>
@@ -15,7 +21,16 @@ class AccountTab extends Component {
           ]}
         >Account</NavBar>
         <WingBlank>
-          <h1>Hi {this.props.name}</h1>
+          <h1>Hi {this.props.data.name}</h1>
+          <List renderHeader='Collected Points' className="point-list">
+            {this.props.merchants.map((m) => {
+              return (
+                <Item extra={m.points} key={m.name}>{m.name}</Item>
+              )
+            })}
+            
+          </List>
+          <WhiteSpace />
           <LogoutButton />
         </WingBlank>
       </div>
