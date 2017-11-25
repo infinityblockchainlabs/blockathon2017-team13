@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import Loader               from 'react-loader'
 import { connect } from 'react-redux'
-import ProfileFormContainer from '../../user/ui/profileform/ProfileFormContainer'
-import BuyFormContainer from '../../user/ui/buyform/BuyFormContainer'
-import TransferFormContainer from '../../user/ui/transferform/TransferFormContainer'
-import SellFormContainer from '../../user/ui/sellform/SellFormContainer'
-import MessageDisplay from '../../user/ui/util/MessageDisplay'
+import ProfileFormContainer from '../../ui/profileform/ProfileFormContainer'
+import BuyFormContainer from '../../ui/buyform/BuyFormContainer'
+import TransferFormContainer from '../../ui/transferform/TransferFormContainer'
+import SellFormContainer from '../../ui/sellform/SellFormContainer'
+import MessageDisplay from '../../ui/util/MessageDisplay'
 
 class Dashboard extends Component {
   constructor(props) {
