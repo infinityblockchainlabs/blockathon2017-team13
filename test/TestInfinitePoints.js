@@ -44,12 +44,29 @@ contract('InfinitePoints', (accounts) => {
     let wcoin2 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
     assert.equal(wcoin1.c[0], 300, "Get wcoin point")
     assert.equal(wcoin2.c[0], 600, "Get wcoin point")
-    
-    // await infinitePointInstance.exchangePoints(accounts[0], accounts[2], accounts[3], 100)
-    // let wcoin1 = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[1]})
-    // let wcoin2 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
 
-    // console.log(wcoin1)
-    // console.log(wcoin2)
+    // create offer
+    await infinitePointInstance.createOffer("unique_id_01", "sell", accounts[2], accounts[0], 100, {from: accounts[3]})
+    let offer = await infinitePointInstance.getOffer("unique_id_01")
+    assert.equal(offer[0], accounts[3], "Creator is 3rd")
+    assert.equal(offer[1], accounts[2], "Sell merchant 2 to merchant 1")
+    assert.equal(offer[2], accounts[0], "Sell merchant 2 to merchant 1")
+    assert.equal(offer[3], 100, "Amount of transfer")
+
+    // account 0 come and take account 2
+    let wcoin3 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[1]})
+    let wcoin4 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
+    console.log(wcoin3.c[0])
+    console.log(wcoin4.c[0])
+
+    await infinitePointInstance.exchangePointToPoint("unique_id_01", {from: accounts[1]})
+
+    let wcoin5 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[1]})
+    let wcoin6 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
+    console.log(wcoin5.c[0])
+    console.log(wcoin6.c[0])
+    // assert.equal(wcoin3.c[0], 300, "Get wcoin point")
+    // assert.equal(wcoin4.c[0], 600, "Get wcoin point")
+
   })
 })

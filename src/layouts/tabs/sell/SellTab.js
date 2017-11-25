@@ -14,25 +14,41 @@ class SellTab extends Component {
 
   render() {
     const { sellList } = this.props.exchange
+    const { wecoinBalance } = this.props.user
     
     return(
-      <WingBlank>
-        <List renderHeader={() => 'Sell Now'}>
-          {sellList.map(i => (
-            <Item
-              key={i.id}
-              thumb={i.merchant_icon}
-              extra={<Button type="warning">Sell</Button>}
-              onClick={() => {}}
-              multipleLine
-              wrap
-            >{i.username}<br/>
-              <span className="item-sell-amount">buys <strong>{i.sell_amount} {i.merchant_code} pts.</strong></span><br/>
-              <span className="item-sell-price">Price: <strong>{i.sell_total_price} WeCoin</strong></span><br/>
+      <div>
+        <NavBar
+          mode="dark"
+          rightContent={[
+            <Icon key="0" type="ellipsis" />,
+          ]}
+        >Sell</NavBar>
+        <WingBlank>
+          <WhiteSpace />
+          <List renderHeader="" className="my-list">
+            <Item extra={this.props.user.wecoinBalance + " WeCoin"} align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png" multipleLine>
+              {this.props.user.data.name} 
             </Item>
-          ))}
-        </List>
-      </WingBlank>
+          </List>
+          <WhiteSpace />
+          <List renderHeader={() => 'Sell Now'}>
+            {sellList.map(i => (
+              <Item
+                key={i.id}
+                thumb={i.merchant_icon}
+                extra={<Button type="warning">Sell</Button>}
+                onClick={() => {}}
+                multipleLine
+                wrap
+              >{i.username}<br/>
+                <span className="item-sell-amount">buys <strong>{i.sell_amount} {i.merchant_code} pts.</strong></span><br/>
+                <span className="item-sell-price">Price: <strong>{i.sell_total_price} WeCoin</strong></span><br/>
+              </Item>
+            ))}
+          </List>
+        </WingBlank>
+      </div>
     )
   }
 }
