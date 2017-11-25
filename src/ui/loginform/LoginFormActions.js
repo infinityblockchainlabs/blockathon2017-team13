@@ -1,5 +1,4 @@
-import AuthenticationContract from '../../../build/contracts/InfinitePoints.json'
-import CryptoLicenseToken from '../../../build/contracts/InfinitePoints.json'
+import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
 import { getEtherBalance } from '../profileform/ProfileFormActions'
 import { browserHistory } from 'react-router'
 import store from '../../store'
@@ -57,28 +56,15 @@ export function loginUser(coinbase) {
         try {
             dispatch(setLoaderStatus(false))
             dispatch(setErrorMessage(null))
-            const authentication = contract(AuthenticationContract)
-            const cryptoToken = contract(CryptoLicenseToken)
-            authentication.setProvider(web3.currentProvider)
-            cryptoToken.setProvider(web3.currentProvider)
-            const [authenticationInstance, tokenInstance] = await Promise.all([
-                authentication.deployed(),
-                cryptoToken.deployed()
-            ])
-            const [name, tokenBalance, ethBalance, price] = await Promise.all([
-                authenticationInstance.login({from: coinbase}),
-                tokenInstance.getBalance({ from: coinbase }),
-                getEtherBalance(coinbase),
-                tokenInstance.getPrices()
-            ])
-            const [p1, p2] = price || []
+            const infiniteContract = contract(InfinitePointsContract)
+            infiniteContract.setProvider(web3.currentProvider)
+            const contractInstance = await infiniteContract.deployed()
+            const [name, rate, isMerChant] = await contractInstance.getAccountInfo({ from: coinbase})
             dispatch(userLoggedIn({
                 name: web3.toUtf8(name),
                 coinbase,
-                tokenBalance: tokenBalance.c[0],
-                ethBalance,
-                sellPrice: web3.fromWei(p1, 'ether'),
-                buyPrice: web3.fromWei(p2, 'ether'),
+                rate: rate.c[0],
+                isMerChant
             }))
             const currentLocation = browserHistory.getCurrentLocation()
 
