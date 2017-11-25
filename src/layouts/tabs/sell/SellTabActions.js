@@ -1,6 +1,6 @@
 import InfinitePointsContract from '../../../../build/contracts/InfinitePoints.json'
 import store from '../../../store'
-import { setErrorMessage, refreshAccount } from '../../../ui/loginform/LoginFormActions'
+import { setErrorMessage, refreshAccount, unlockAccount } from '../../../ui/loginform/LoginFormActions'
 import contract from 'truffle-contract'
 
 export const EXCHANGE_GOT_SELL_LIST = 'EXCHANGE_GOT_SELL_LIST'
@@ -52,6 +52,7 @@ export function sellOffer(offerId) {
                 const infiniteContract = contract(InfinitePointsContract)
                 infiniteContract.setProvider(web3.currentProvider)
                 const contractInstance = await infiniteContract.deployed()
+                await unlockAccount(coinbase, 'testaccteamweup')
                 await contractInstance.convertPoint(offerId, { from: coinbase }),
                 dispatch(refreshAccount(coinbase))
                 dispatch(getSellList())

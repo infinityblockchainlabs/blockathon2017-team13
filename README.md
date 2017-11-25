@@ -1,7 +1,7 @@
 # blockathon2017-team13
 =============
 
-# Getting Started
+# Getting Started``
 
 ### How to deploy on local
 1. Modify `truffle.js`
