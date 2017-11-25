@@ -8,9 +8,10 @@ class Login extends Component {
   render() {
     return(
       <main>
-        <NavBar
-          mode="dark"
-        >WeUP Loyalty Framework</NavBar>
+        <div style={{textAlign: 'center', padding: 120, height: 350}}>
+          <p style={{fontSize: 35, fontWeight: 600}}>WeUp</p>
+          <p style={{fontSize: 14, fontWeight: 400, color: '#949494'}}>Loyalty Framework</p>
+        </div>
         <WingBlank>
           <LoginFormContainer />
           <WhiteSpace />
