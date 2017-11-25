@@ -43,9 +43,6 @@ class AccountTab extends Component {
       <div>
         <NavBar
           mode="dark"
-          rightContent={[
-            <Icon type="loading" onClick={() => this.refreshData().bind(this)} />,
-          ]}
         >Account</NavBar>
         <WingBlank>
           <List renderHeader="" className="my-list">
