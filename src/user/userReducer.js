@@ -1,6 +1,6 @@
 const initialState = {
   data: null,
-  wecoinBalance: 100,
+  wecoinBalance: 0,
   merchants: [],
   errorMessage: null,
   infoMessage: null,
@@ -11,7 +11,8 @@ const userReducer = (state = initialState, action) => {
   if (action.type === 'USER_LOGGED_IN' || action.type === 'USER_UPDATED') {
     return {
       ...state,
-      data: action.payload
+      data: action.payload,
+      wecoinBalance: action.payload.wecoinBalance || 0
     }
   }
 
