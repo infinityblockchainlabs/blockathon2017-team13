@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const userReducer = (state = initialState, action) => {
-  if (action.type === 'USER_LOGGED_IN' || action.type === 'USER_UPDATED') {
+  if (action.type === 'USER_LOGGED_IN' || action.type === 'USER_UPDATED' || action.type === 'USER_GOT_ACCOUNT_INFO') {
     return {
       ...state,
       data: action.payload,
