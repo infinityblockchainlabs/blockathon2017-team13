@@ -3,13 +3,17 @@ import { browserHistory } from 'react-router'
 
 import { NavBar, WingBlank, Icon, WhiteSpace } from 'antd-mobile'
 import LoginFormContainer from '../../ui/loginform/LoginFormContainer'
+import './login.css'
 
 class Login extends Component {
   render() {
     return(
-      <main>
-        <div style={{textAlign: 'center', padding: 120, height: 350}}>
-          <p style={{fontSize: 35, fontWeight: 600}}>WeUp</p>
+      <main className="app-bg">
+        <div style={{textAlign: 'center', padding: 100, height: 350}}>
+          <img alt="example" width="200px"
+               src="/images/weup.png"/>
+          <br/>
+          <br/>
           <p style={{fontSize: 14, fontWeight: 400, color: '#949494'}}>Loyalty Framework</p>
         </div>
         <WingBlank>

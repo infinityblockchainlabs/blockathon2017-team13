@@ -12,7 +12,7 @@ class Home extends Component {
           rightContent={[
             <Icon key="0" type="ellipsis" />
           ]}
-        >WeUP</NavBar>
+        >WeUp</NavBar>
         <WingBlank>
           <WhiteSpace />
           <div style={{ textAlign: 'center' }}>
