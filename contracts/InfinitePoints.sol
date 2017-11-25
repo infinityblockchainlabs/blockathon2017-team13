@@ -221,4 +221,21 @@ contract InfinitePoints {
         points[merchantA][to] += amount;
         points[merchantB][to] -= toAmount;
     }
+
+    function convertPoint(string offerId) public {
+        require(offers[offerId].typ == "buy" || offers[offerId].typ == "sell");
+        Offer memory offer = offers[offerId];
+
+        if (offer.typ == "sell") { // sender buy
+            exchangeWCoinToPoint(offer.to, offer.amount);
+        } else { // sender sell
+            exchangePointToWCoin(offer.from, offer.amount);
+        }
+
+        delete offers[offerId];
+    }
+
+    function getWCoinBalance() constant public returns (uint256) {
+        return wcoins[msg.sender];
+    }
 }
