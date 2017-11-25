@@ -34,13 +34,17 @@ class AccountTab extends Component {
     }
   }
 
+  refreshData() {
+    setTimeout(() => this.props.getMerchants(), 500)
+  }
+
   render() {
     return(
       <div>
         <NavBar
           mode="dark"
           rightContent={[
-            <Icon key="0" type="ellipsis" />,
+            <Icon type="loading" onClick={() => this.refreshData().bind(this)} />,
           ]}
         >Account</NavBar>
         <WingBlank>
