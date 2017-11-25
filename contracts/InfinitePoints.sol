@@ -26,7 +26,8 @@ contract InfinitePoints {
       address from;
       address to;
       uint256 amount;
-      bytes32 type;
+      bytes32 typ;
+      bool sold;
     }
 
     Offer[] offers;
@@ -177,13 +178,14 @@ contract InfinitePoints {
         return accounts[id].isMerchant;
     }
 
-    function createNewOffer (bytes32 transactionId, bytes32 type, address from, address to, amount) public {
-      require(type == 'buy' || type == 'sell');
+    function createNewOffer (string transactionId, bytes32 typ, address from, address to, uint256 amount) public {
+      require(typ == "buy" || typ == "sell");
       Offer offer;
-      offer.type = type;
+      offer.typ = typ;
       offer.from = from;
       offer.to = to;
-      if(type == 'buy') {
+      offer.amount = amount;
+      if(typ == "buy") {
           offer.seller = msg.sender;
       } else {
           offer.buyer = msg.sender;
@@ -191,11 +193,31 @@ contract InfinitePoints {
       offers.push(offer);
     }
 
+    function bytes32ToString (bytes32 data) returns (string) {
+        bytes memory bytesString = new bytes(32);
+        for (uint j=0; j<32; j++) {
+            byte char = byte(bytes32(uint(data) * 2 ** (8 * j)));
+            if (char != 0) {
+                bytesString[j] = char;
+            }
+        }
+        return string(bytesString);
+    }
+
     function getOffers () public returns (string) {
-        string memory lostOffers = "";
+        string memory listOffers = "";
         for (uint i = 0; i <offers.length; ++i) {
             Offer offer = offers[i];
-            if (i > 0) lostOffers = concat(lostOffers, ",");
+            if(!offer.sold) {
+                if (i > 0) listOffers = concat(listOffers, ",");
+                listOffers = concat(concat(listOffers, ":"), toString(offer.seller));
+                listOffers = concat(concat(listOffers, ":"), toString(offer.buyer));
+                listOffers = concat(concat(listOffers, ":"), toString(offer.from));
+                listOffers = concat(concat(listOffers, ":"), toString(offer.to));
+                listOffers = concat(concat(listOffers, ":"), bytes32ToString(bytes32(offer.amount)));
+                listOffers = concat(concat(listOffers, ":"), bytes32ToString(offer.typ));
+            }
         }
+        return listOffers;
     }
 }
