@@ -52,7 +52,6 @@ export function buyOffer(offerId) {
                 const infiniteContract = contract(InfinitePointsContract)
                 infiniteContract.setProvider(web3.currentProvider)
                 const contractInstance = await infiniteContract.deployed()
-                console.log(coinbase)
                 await contractInstance.convertPoint(offerId, { from: coinbase })
             } catch (err) {
                 console.log(err)

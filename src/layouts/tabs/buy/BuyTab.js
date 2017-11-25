@@ -19,7 +19,7 @@ class BuyTab extends Component {
 
   render() {
     const { buyList } = this.props.exchange
-    const { wecoinBalance } = this.props.user
+    console.log(buyList)
     
     return(
       <div>

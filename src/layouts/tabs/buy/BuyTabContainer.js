@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getBuyList: () => dispatch(getBuyList()),
-    buyOffer: () => dispatch(buyOffer())
+    buyOffer: (offerId) => dispatch(buyOffer(offerId))
   }
 }
 
