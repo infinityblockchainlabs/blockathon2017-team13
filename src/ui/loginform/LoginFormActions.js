@@ -120,7 +120,7 @@ export function loginUser(username, password, cookies) {
 
             dispatch(userLoggedIn({
                 name: web3.toUtf8(name),
-                account,
+                coinbase: account,
                 rate: rate.c[0],
                 isMerChant,
                 code,
