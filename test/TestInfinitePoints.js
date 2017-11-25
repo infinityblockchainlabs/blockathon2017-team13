@@ -45,9 +45,9 @@ contract('InfinitePoints', (accounts) => {
     // user 2 has 600 wcoin
     // user 1 has 300 wcoin
     
-    await infinitePointInstance.exchangePoints(accounts[0], accounts[2], accounts[3], 100)
-    let wcoin1 = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[1]})
-    let wcoin2 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
+    // await infinitePointInstance.exchangePoints(accounts[0], accounts[2], accounts[3], 100)
+    // let wcoin1 = await infinitePointInstance.getWCoin(accounts[0], {from: accounts[1]})
+    // let wcoin2 = await infinitePointInstance.getWCoin(accounts[2], {from: accounts[3]})
 
     // console.log(wcoin1)
     // console.log(wcoin2)

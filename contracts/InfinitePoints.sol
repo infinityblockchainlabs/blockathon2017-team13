@@ -133,15 +133,9 @@ contract InfinitePoints {
         return amount * accounts[merchantFrom].rate / accounts[merchantTo].rate;
     }
 
-    function getMerchantRate (address merchant) constant public returns (uint256) {
-        require(isMerchant(merchant));
-        require(accounts[merchant].rate >= 1);
-        return accounts[merchant].rate;
-    }
-
     function getWCoin (address merchant) constant public returns (uint256) {
         require(points[merchant][msg.sender] > 0);
-        uint256 rate = getMerchantRate(merchant);
+        uint256 rate = accounts[merchant].rate;
         return points[merchant][msg.sender] * rate;
     }
 
@@ -151,7 +145,7 @@ contract InfinitePoints {
         require(points[merchant][msg.sender] > 0);
         require(amount > 0);
 
-        uint256 rate = getMerchantRate(merchant);
+        uint256 rate = accounts[merchant].rate;
 
         points[merchant][msg.sender] -= amount;
         wcoins[msg.sender] += amount * rate;
@@ -163,7 +157,7 @@ contract InfinitePoints {
         require(points[merchant][msg.sender] > 0);
         require(amount > 0);
 
-        uint256 rate = getMerchantRate(merchant);
+        uint256 rate = accounts[merchant].rate;
 
         wcoins[msg.sender] -= amount;
         points[merchant][msg.sender] += amount / rate;
