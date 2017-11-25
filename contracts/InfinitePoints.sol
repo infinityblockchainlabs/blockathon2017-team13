@@ -18,8 +18,18 @@ contract InfinitePoints {
       bool isMerchant;
       uint256 rate;
     }
-
     mapping (address => Account) private accounts;
+
+    struct Offer {
+      address seller;
+      address buyer;
+      address from;
+      address to;
+      uint256 amount;
+      bytes32 type;
+    }
+
+    Offer[] offers;
 
     function InfinitePoints () {
         owner = msg.sender;
@@ -165,5 +175,27 @@ contract InfinitePoints {
 
     function isMerchant (address id) constant internal returns (bool) {
         return accounts[id].isMerchant;
+    }
+
+    function createNewOffer (bytes32 transactionId, bytes32 type, address from, address to, amount) public {
+      require(type == 'buy' || type == 'sell');
+      Offer offer;
+      offer.type = type;
+      offer.from = from;
+      offer.to = to;
+      if(type == 'buy') {
+          offer.seller = msg.sender;
+      } else {
+          offer.buyer = msg.sender;
+      }
+      offers.push(offer);
+    }
+
+    function getOffers () public returns (string) {
+        string memory lostOffers = "";
+        for (uint i = 0; i <offers.length; ++i) {
+            Offer offer = offers[i];
+            if (i > 0) lostOffers = concat(lostOffers, ",");
+        }
     }
 }
