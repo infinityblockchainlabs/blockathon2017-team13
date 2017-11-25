@@ -20,7 +20,6 @@ class LoginForm extends Component {
 
     submit() {
         this.props.form.validateFields((error, value) => {
-            console.log(error, value);
 
             const { username, password } = value
             

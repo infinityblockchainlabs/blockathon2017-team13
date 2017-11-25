@@ -9,8 +9,6 @@ import getWeb3 from './util/web3/getWeb3'
 
 // User App
 import App from './App'
-import Home from './layouts/home/Home'
-import SignUp from './layouts/signup/SignUp'
 import Login from './layouts/login/Login'
 import MainApp from './layouts/MainApp'
 import CreateFakeData from './layouts/CreateFakeData'
@@ -44,7 +42,6 @@ ReactDOM.render((
         <Router history={history}>
           <Route path="/" component={App}>
             <IndexRoute component={UserIsNotAuthenticated(Login)} />
-            <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="login" component={UserIsNotAuthenticated(Login)} />
             <Route path="app" component={UserIsAuthenticated(MainApp)} />
             <Route path="fake" component={CreateFakeData} />

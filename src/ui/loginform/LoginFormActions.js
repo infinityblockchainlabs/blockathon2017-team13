@@ -1,5 +1,4 @@
 import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
-import { getEtherBalance } from '../profileform/ProfileFormActions'
 import { browserHistory } from 'react-router'
 import store from '../../store'
 
@@ -49,6 +48,37 @@ export const unlockAccount = (account, password) => new Promise((resolve, reject
         reject('Web3 is not initialized.');
     }
 })
+
+export function refreshAccount (account) {
+    let web3 = store.getState().web3.web3Instance
+    if (typeof web3 !== 'undefined') {
+        return (async (dispatch) => {
+            try {
+                const infiniteContract = contract(InfinitePointsContract)
+                infiniteContract.setProvider(web3.currentProvider)
+                const contractInstance = await infiniteContract.deployed()
+
+                const accountInfo = await contractInstance.getAccountInfo({ from: account })
+                const [name, rate, isMerChant, code, url, wCoinBalance] = accountInfo
+
+                dispatch(userLoggedIn({
+                    name: web3.toUtf8(name),
+                    coinbase: account,
+                    rate: rate.c[0],
+                    isMerChant,
+                    code,
+                    url,
+                    wecoinBalance: wCoinBalance.c[0]
+                }))
+            } catch (err) {
+                console.log(err)
+                dispatch(setErrorMessage(err.message))
+            }
+        })
+    } else {
+        console.error('Web3 is not initialized.');
+    }
+}
 
 export function restoreSession(cookies) {
     if (!cookies) return
