@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 
-import { NavBar, WingBlank, WhiteSpace, Icon, List } from 'antd-mobile'
+import { NavBar, WingBlank, WhiteSpace, Icon, List, Button } from 'antd-mobile'
 import LogoutButton from '../../../ui/logoutbutton/LogoutButtonContainer'
 
 const Item = List.Item
@@ -30,6 +30,8 @@ class AccountTab extends Component {
             })}
             
           </List>
+          <WhiteSpace />
+          <Button type="primary">Link new site</Button>
           <WhiteSpace />
           <LogoutButton />
         </WingBlank>

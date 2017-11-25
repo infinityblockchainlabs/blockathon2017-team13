@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 class App extends Component {
   componentWillMount() {
-    // this.props.restoreUserSession()
+    this.props.restoreUserSession()
   }
 
   render() {

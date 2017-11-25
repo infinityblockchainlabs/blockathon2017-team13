@@ -53,7 +53,7 @@ export const unlockAccount = (account, password) => new Promise((resolve, reject
 export function restoreSession(cookies) {
     if (!cookies) return
 
-    return (async (dispatch) => {
+    return ((dispatch) => {
         const coinbase = cookies.get('coinbase')
         const accountInfo = cookies.get('accountInfo')
         const {name, rate, isMerChant} = accountInfo
@@ -62,7 +62,7 @@ export function restoreSession(cookies) {
             dispatch(userLoggedIn({
                 name,
                 coinbase,
-                rate: rate.c[0],
+                rate: rate,
                 isMerChant
             }))
 
