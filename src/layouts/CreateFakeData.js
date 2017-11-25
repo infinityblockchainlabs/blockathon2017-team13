@@ -7,26 +7,30 @@ const contract = require('truffle-contract')
 
 
 const createFakeData = async () => {
-  let web3 = store.getState().web3.web3Instance
+  try {
+      let web3 = store.getState().web3.web3Instance
 
-  const accounts = web3.eth.accounts
-  const ZERO_ACCOUNT = accounts[0];
-  const infiniteContract = contract(InfinitePointsContract)
-  infiniteContract.setProvider(web3.currentProvider)
-  const contractInstance = await infiniteContract.deployed()
+      const accounts = web3.eth.accounts
+      const ZERO_ACCOUNT = accounts[0];
+      const infiniteContract = contract(InfinitePointsContract)
+      infiniteContract.setProvider(web3.currentProvider)
+      const contractInstance = await infiniteContract.deployed()
 
-  await contractInstance.signup('Weup', accounts[0], true, 1, { from: ZERO_ACCOUNT })
-  await contractInstance.signup('User 1', accounts[1], false, 0, { from: ZERO_ACCOUNT })
-  await contractInstance.signup('Merchant 1', accounts[2], true, 2, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('Weup', accounts[0], true, 1, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('User 1', accounts[1], false, 0, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('Merchant 1', accounts[2], true, 2, { from: ZERO_ACCOUNT })
 
-  await contractInstance.signup('User 2', accounts[3], false, 0, { from: ZERO_ACCOUNT })
-  await contractInstance.signup('Merchant 2', accounts[4], true, 2, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('User 2', accounts[3], false, 0, { from: ZERO_ACCOUNT })
+      await contractInstance.signup('Merchant 2', accounts[4], true, 2, { from: ZERO_ACCOUNT })
 
-  console.log('Weup: ', accounts[0])
-  console.log('User 1: ', accounts[1])
-  console.log('Merchant 1: ', accounts[2])
-  console.log('User 2: ', accounts[3])
-  console.log('Merchant 2: ', accounts[4])
+      console.log('Weup: ', accounts[0])
+      console.log('User 1: ', accounts[1])
+      console.log('Merchant 1: ', accounts[2])
+      console.log('User 2: ', accounts[3])
+      console.log('Merchant 2: ', accounts[4])
+  } catch (err) {
+    console.log('ERROR!!!:', err)
+  }
 }
 
 const mapStateToProps = (state) => {
