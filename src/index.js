@@ -43,7 +43,7 @@ ReactDOM.render((
       <CookiesProvider>
         <Router history={history}>
           <Route path="/" component={App}>
-            <IndexRoute component={Home} />
+            <IndexRoute component={UserIsNotAuthenticated(Login)} />
             <Route path="signup" component={UserIsNotAuthenticated(SignUp)} />
             <Route path="login" component={UserIsNotAuthenticated(Login)} />
             <Route path="app" component={UserIsAuthenticated(MainApp)} />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
-import { NavBar, Icon, WingBlank, Button } from 'antd-mobile'
+import { NavBar, Icon, WingBlank, Button, WhiteSpace } from 'antd-mobile'
 
 class Home extends Component {
   render() {
@@ -14,7 +14,11 @@ class Home extends Component {
           ]}
         >WeUP</NavBar>
         <WingBlank>
-          <h2>You haven't logged in yet</h2>
+          <WhiteSpace />
+          <div style={{ textAlign: 'center' }}>
+            <h2>A loyalty blockchain framework</h2>
+          </div>
+          <WhiteSpace />
           <Link to="/login"><Button>Login</Button></Link>
         </WingBlank>
       </main>
