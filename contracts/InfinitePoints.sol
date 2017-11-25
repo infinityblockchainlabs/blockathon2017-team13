@@ -99,8 +99,8 @@ contract InfinitePoints {
         points[msg.sender][customer] -= point;
     }
     
-    function getPoints (address merchant, address customer) constant public returns (uint256) {
-        return points[merchant][customer];
+    function getMerchantPoints (address merchant, address customer) constant public returns (bytes32, uint256) {
+        return (accounts[merchant].name, points[merchant][customer]);
     }
 
     function getMerchants () constant public returns (string) {
@@ -158,9 +158,9 @@ contract InfinitePoints {
         offerList.push(offerId);
     }
 
-    function getOffer (string offerId) constant public returns (string, string, string) {
+    function getOffer (string offerId) constant public returns (string, string, string, uint256) {
       Offer offer = offers[offerId];
-      return (toString(offer.creator), toString(offer.from), toString(offer.to));
+      return (toString(offer.creator), toString(offer.from), toString(offer.to), offer.amount);
     }
 
     function getOfferIds () public returns (string) {
