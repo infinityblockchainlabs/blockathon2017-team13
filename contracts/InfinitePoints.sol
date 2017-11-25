@@ -17,12 +17,13 @@ contract InfinitePoints {
       bytes32 name;
       bool isMerchant;
       uint256 rate;
+      string code;
+      string url;
     }
     mapping (address => Account) private accounts;
 
     struct Offer {
-      address seller;
-      address buyer;
+      address creator;
       address from;
       address to;
       uint256 amount;
@@ -58,7 +59,7 @@ contract InfinitePoints {
         return concat("0x", string(s));
     }
 
-    function signup(bytes32 name, address eth, bool isMerchant, uint256 rate) returns (address) {
+    function signup(bytes32 name, address eth, bool isMerchant, uint256 rate, string code, string url) returns (address) {
         require(!isMerchant || rate >= 1);
 
         if (accounts[eth].name == 0x0) {
@@ -66,6 +67,8 @@ contract InfinitePoints {
             accounts[eth].isMerchant = isMerchant;
             if (isMerchant) {
                 accounts[eth].rate = rate;
+                accounts[eth].code = code;
+                accounts[eth].url = url;
             }
             return (eth);
         }
@@ -73,9 +76,9 @@ contract InfinitePoints {
         return (eth);
     }
 
-    function getAccountInfo () constant public returns (bytes32, uint256, bool) {
+    function getAccountInfo () constant public returns (bytes32, uint256, bool, string, string) {
         Account acc = accounts[msg.sender];
-        return (acc.name, acc.rate, acc.isMerchant);
+        return (acc.name, acc.rate, acc.isMerchant, acc.code, acc.url);
     }
 
     function addPoints (address customer, uint256 point) public {
@@ -100,8 +103,8 @@ contract InfinitePoints {
         points[msg.sender][customer] -= point;
     }
     
-    function getPoints (address merchant, address customer) constant public returns (uint256) {
-        return points[merchant][customer];
+    function getMerchantPoints (address merchant, address customer) constant public returns (bytes32, uint256) {
+        return (accounts[merchant].name, points[merchant][customer]);
     }
 
     function getMerchants () constant public returns (string) {
@@ -113,46 +116,15 @@ contract InfinitePoints {
         return merchantList;
     }
 
-    function exchangePoints(address merchantFrom, address merchantTo, address to, uint256 amount) public {
-        require(points[merchantFrom][msg.sender] >= amount);
-        require(isMerchant(merchantTo));
-        require(isMerchant(merchantFrom));
-        require(amount > 0);
-
-        if (points[merchantTo][msg.sender] == 0) {
-            merchants[msg.sender].push(merchantTo);
-        }
-        if (points[merchantFrom][msg.sender] == amount) {
-          for (uint i = 0; i < merchants[msg.sender].length; i++) {
-              if (merchantFrom == merchants[msg.sender][i]) {
-                  delete merchants[msg.sender][i];
-                  break;
-              }
-          }
-        }
-
-        amount = getExchangeRate(merchantFrom, merchantTo, amount);
-        points[merchantFrom][msg.sender] -= amount;
-        points[merchantTo][msg.sender] += amount;
-    }
-
-    function getExchangeRate (address merchantFrom, address merchantTo, uint256 amount) constant public returns (uint256) {
-        require(isMerchant(merchantFrom));
-        require(isMerchant(merchantTo));
-        require(amount > 0);
-
-        return amount * accounts[merchantFrom].rate / accounts[merchantTo].rate;
-    }
-
     function getWCoin (address merchant) constant public returns (uint256) {
         require(points[merchant][msg.sender] > 0);
         uint256 rate = accounts[merchant].rate;
         return points[merchant][msg.sender] * rate;
     }
 
-    function pointsToWCoin (address merchant, uint256 amount) public {
+    function exchangePointToWCoin (address merchant, uint256 amount) public {
         require(isMerchant(merchant)); // 
-        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoin
+        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoins
         require(points[merchant][msg.sender] > 0);
         require(amount > 0);
 
@@ -162,9 +134,9 @@ contract InfinitePoints {
         wcoins[msg.sender] += amount * rate;
     }
 
-    function wcoinsToPoint (address merchant, uint256 amount) public {
+    function exchangeWCoinToPoint (address merchant, uint256 amount) public {
         require(isMerchant(merchant)); // 
-        require(!isMerchant(msg.sender)); // only customer can exchange points to wcoin
+        require(!isMerchant(msg.sender)); // only customer can exchange wcoins to points
         require(points[merchant][msg.sender] > 0);
         require(amount > 0);
 
@@ -178,35 +150,70 @@ contract InfinitePoints {
         return accounts[id].isMerchant;
     }
 
-    function setOffer (string offerId, bytes32 typ, address from, address to, uint256 amount) public {
-      require(typ == "buy" || typ == "sell");
-      Offer offer;
-      offer.typ = typ;
-      offer.from = from;
-      offer.to = to;
-      offer.amount = amount;
-      if(typ == "buy") {
-          offer.seller = msg.sender;
-      } else {
-          offer.buyer = msg.sender;
-      }
-      offers[offerId] = offer;
-      offerList.push(offerId);
+    function createOffer (string offerId, bytes32 typ, address from, address to, uint256 amount) public {
+        require(typ == "buy" || typ == "sell");
+        Offer memory offer;
+        offer.typ = typ;
+        offer.from = from;
+        offer.to = to;
+        offer.amount = amount;
+        offer.creator = msg.sender;
+        offers[offerId] = offer;
+        offerList.push(offerId);
     }
 
-    function getOffer (string offerId) constant public returns (string, string, string, string, uint256, bool) {
+    function getOffer (string offerId) constant public returns (string, string, string, uint256) {
       Offer offer = offers[offerId];
-      return (toString(offer.seller), toString(offer.buyer), toString(offer.from), toString(offer.to), offer.amount, offer.sold);
+      return (toString(offer.creator), toString(offer.from), toString(offer.to), offer.amount);
     }
 
     function getOfferIds () public returns (string) {
         string memory offerIds = "";
-        for (uint i = 0; i <offerList.length; ++i) {
-            if(!offers[offerList[i]].sold) {
+        for (uint i = 0; i < offerList.length; ++i) {
+            if (!offers[offerList[i]].sold) {
                 if (i > 0) offerIds = concat(offerIds, ",");
                 offerIds = concat(offerIds, offerList[i]);
             }
         }
         return offerIds;
+    }
+
+    function exchangePointToPoint (string offerId, uint256 amount) public {
+        require(offers[offerId].typ == "buy" || offers[offerId].typ == "sell");
+        Offer memory offer = offers[offerId];
+
+        if (offer.typ == "sell") { // sender buy
+            exchangeP2P(offer.from, offer.to, offer.creator, msg.sender, amount);
+        } else { // sender sell
+            exchangeP2P(offer.to, offer.from, msg.sender, offer.creator, amount);
+        }
+
+        delete offers[offerId];
+    }
+
+    function exchangeP2P(address merchantA, address merchantB, address from, address to, uint256 amount) public {
+        uint256 toAmount = amount * accounts[merchantA].rate / accounts[merchantB].rate;
+        require(points[merchantA][from] >= amount);
+        require(points[merchantB][to] >= toAmount);
+
+        // add list merchant to [to] if not exist
+        if (points[merchantB][to] == 0) {
+            merchants[to].push(merchantB);
+        }
+        // remove if [from] tranfer all amount to [to]
+        if (points[merchantA][from] == amount) {
+            for (uint i = 0; i < merchants[from].length; i++) {
+                if (merchantA == merchants[from][i]) {
+                    delete merchants[from][i];
+                    break;
+                }
+            }
+        }
+
+        // change amount of [from] and [to]
+        points[merchantA][from] -= amount;
+        points[merchantB][from] += toAmount;
+        points[merchantA][to] += amount;
+        points[merchantB][to] -= toAmount;
     }
 }

@@ -14,7 +14,7 @@ class AccountTab extends Component {
     }
   }
   componentDidMount() {
-    this.props.getMerchants()
+    setTimeout(() => this.props.getMerchants(), 500)
   }
 
   showModal (key) {
