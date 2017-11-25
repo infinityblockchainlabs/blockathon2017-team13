@@ -21,8 +21,7 @@ contract InfinitePoints {
     mapping (address => Account) private accounts;
 
     struct Offer {
-      address seller;
-      address buyer;
+      address creator;
       address from;
       address to;
       uint256 amount;
@@ -113,37 +112,6 @@ contract InfinitePoints {
         return merchantList;
     }
 
-    function exchangePoints(address merchantFrom, address merchantTo, address to, uint256 amount) public {
-        require(points[merchantFrom][msg.sender] >= amount);
-        require(isMerchant(merchantTo));
-        require(isMerchant(merchantFrom));
-        require(amount > 0);
-
-        if (points[merchantTo][msg.sender] == 0) {
-            merchants[msg.sender].push(merchantTo);
-        }
-        if (points[merchantFrom][msg.sender] == amount) {
-          for (uint i = 0; i < merchants[msg.sender].length; i++) {
-              if (merchantFrom == merchants[msg.sender][i]) {
-                  delete merchants[msg.sender][i];
-                  break;
-              }
-          }
-        }
-
-        amount = getExchangeRate(merchantFrom, merchantTo, amount);
-        points[merchantFrom][msg.sender] -= amount;
-        points[merchantTo][msg.sender] += amount;
-    }
-
-    function getExchangeRate (address merchantFrom, address merchantTo, uint256 amount) constant public returns (uint256) {
-        require(isMerchant(merchantFrom));
-        require(isMerchant(merchantTo));
-        require(amount > 0);
-
-        return amount * accounts[merchantFrom].rate / accounts[merchantTo].rate;
-    }
-
     function getWCoin (address merchant) constant public returns (uint256) {
         require(points[merchant][msg.sender] > 0);
         uint256 rate = accounts[merchant].rate;
@@ -179,24 +147,20 @@ contract InfinitePoints {
     }
 
     function createOffer (string offerId, bytes32 typ, address from, address to, uint256 amount) public {
-      require(typ == "buy" || typ == "sell");
-      Offer memory offer;
-      offer.typ = typ;
-      offer.from = from;
-      offer.to = to;
-      offer.amount = amount;
-      if(typ == "buy") {
-          offer.seller = msg.sender;
-      } else {
-          offer.buyer = msg.sender;
-      }
-      offers[offerId] = offer;
-      offerList.push(offerId);
+        require(typ == "buy" || typ == "sell");
+        Offer memory offer;
+        offer.typ = typ;
+        offer.from = from;
+        offer.to = to;
+        offer.amount = amount;
+        offer.creator = msg.sender;
+        offers[offerId] = offer;
+        offerList.push(offerId);
     }
 
-    function getOffer (string offerId) constant public returns (string, string, string, string) {
+    function getOffer (string offerId) constant public returns (string, string, string) {
       Offer offer = offers[offerId];
-      return (toString(offer.seller), toString(offer.buyer), toString(offer.from), toString(offer.to));
+      return (toString(offer.creator), toString(offer.from), toString(offer.to));
     }
 
     function getOfferIds () public returns (string) {
@@ -208,5 +172,42 @@ contract InfinitePoints {
             }
         }
         return offerIds;
+    }
+
+    function exchangePointToPoint (string offerId, uint256 amount) public {
+        require(offers[offerId].typ == "buy" || offers[offerId].typ == "sell");
+        Offer memory offer = offers[offerId];
+
+        if (offer.typ == "sell") { // sender buy
+            exchangeP2P(offer.from, offer.to, offer.creator, msg.sender, amount);
+        } else { // sender sell
+            exchangeP2P(offer.to, offer.from, msg.sender, offer.creator, amount);
+        }
+    }
+
+    function exchangeP2P(address merchantA, address merchantB, address from, address to, uint256 amount) public {
+        uint256 toAmount = amount * accounts[merchantA].rate / accounts[merchantB].rate;
+        require(points[merchantA][from] >= amount);
+        require(points[merchantB][to] >= toAmount);
+
+        // add list merchant to [to] if not exist
+        if (points[merchantB][to] == 0) {
+            merchants[to].push(merchantB);
+        }
+        // remove if [from] tranfer all amount to [to]
+        if (points[merchantA][from] == amount) {
+            for (uint i = 0; i < merchants[from].length; i++) {
+                if (merchantA == merchants[from][i]) {
+                    delete merchants[from][i];
+                    break;
+                }
+            }
+        }
+
+        // change amount of [from] and [to]
+        points[merchantA][from] -= amount;
+        points[merchantB][from] += toAmount;
+        points[merchantA][to] += amount;
+        points[merchantB][to] -= toAmount;
     }
 }
