@@ -7,11 +7,18 @@ const initialState = {
 
 const exchangeReducer = (state = initialState, action) => {
   if (action.type === 'EXCHANGE_GOT_SELL_LIST') {
-    console.log(action)
     return {
       ...state,
       sellList: action.payload,
       sellListLoaded: true,
+    }
+  }
+
+  if (action.type === 'EXCHANGE_GOT_BUY_LIST') {
+    return {
+      ...state,
+      buyList: action.payload,
+      buyListLoaded: true,
     }
   }
 
