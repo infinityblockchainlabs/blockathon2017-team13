@@ -6,8 +6,9 @@ import store from '../store'
 const createFakeData = () => {
   let web3 = store.getState().web3.web3Instance
   const ZERO_ACCOUNT = '0x4be9663dfbcec3c0f009a0959764c340219ec8c1'
+  console.log(web3.eth.accounts, '@@@@@@@@@@@')
 
-  return (async (dispatch) => {
+  return (async () => {
     const contract = contract(InfinitePointsContract)
     contract.setProvider(web3.currentProvider)
     const contractInstance = await contract.deployed()
@@ -23,9 +24,9 @@ const mapStateToProps = (state) => {
   return state.user
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
   return {
-    
+      createFakeData: createFakeData
   }
 }
 
