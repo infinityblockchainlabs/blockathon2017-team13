@@ -183,6 +183,8 @@ contract InfinitePoints {
         } else { // sender sell
             exchangeP2P(offer.to, offer.from, msg.sender, offer.creator, amount);
         }
+
+        delete offers[offerId];
     }
 
     function exchangeP2P(address merchantA, address merchantB, address from, address to, uint256 amount) public {
