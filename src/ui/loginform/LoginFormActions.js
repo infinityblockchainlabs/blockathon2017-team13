@@ -111,7 +111,6 @@ export function loginUser(username, password, cookies) {
 
             const accountInfo = await contractInstance.getAccountInfo({ from: account })
             const [name, rate, isMerChant, code, url, wCoinBalance] = accountInfo
-            console.log(name, rate, isMerChant, code, url, wCoinBalance)
 
             if (cookies) {
                 cookies.set('coinbase', account, { path: '/' })

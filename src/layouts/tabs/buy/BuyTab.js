@@ -20,10 +20,7 @@ class BuyTab extends Component {
       <div>
         <NavBar
           mode="dark"
-          rightContent={[
-            <Icon key="0" type="ellipsis" />,
-          ]}
-        >Buy</NavBar>
+        >Buy Now</NavBar>
         <WingBlank>
           <WhiteSpace />
           <List renderHeader="" className="my-list">
@@ -32,7 +29,7 @@ class BuyTab extends Component {
             </Item>
           </List>
           <WhiteSpace />
-          <List renderHeader={() => 'Buy Now'}>
+          <List>
             {buyList.map(i => (
               <Item
                 key={i.id}

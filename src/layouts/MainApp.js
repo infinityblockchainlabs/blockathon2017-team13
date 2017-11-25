@@ -4,7 +4,7 @@ import { TabBar } from 'antd-mobile'
 import AccountTabContainer from './tabs/account/AccountTabContainer'
 import BuyTabContainer from './tabs/buy/BuyTabContainer'
 import SellTabContainer from './tabs/sell/SellTabContainer'
-import AdvertiseTab from './tabs/AdvertiseTab'
+import AdvertiseTabContainer from './tabs/advertise/AdvertiseTabContainer'
 
 class MainApp extends Component {
   constructor(props) {
@@ -28,17 +28,16 @@ class MainApp extends Component {
               icon={<div style={{
                 width: '22px',
                 height: '22px',
-                background: 'url(https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg) center center /  21px 21px no-repeat' }}
+                background: 'url(/images/account-circle-1.svg) center center /  21px 21px no-repeat' }}
               />
               }
               selectedIcon={<div style={{
                 width: '22px',
                 height: '22px',
-                background: 'url(https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg) center center /  21px 21px no-repeat' }}
+                background: 'url(/images/account-circle-1-fill.svg) center center /  21px 21px no-repeat' }}
               />
               }
               selected={this.state.selectedTab === 'accountTab'}
-              badge={1}
               onPress={() => {
                 this.setState({
                   selectedTab: 'accountTab',
@@ -52,19 +51,18 @@ class MainApp extends Component {
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-down.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               selectedIcon={
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-down-fill.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               title="Buy"
               key="Buy"
-              badge={'new'}
               selected={this.state.selectedTab === 'buyTab'}
               onPress={() => {
                 this.setState({
@@ -79,19 +77,18 @@ class MainApp extends Component {
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-up.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               selectedIcon={
                 <div style={{
                   width: '22px',
                   height: '22px',
-                  background: 'url(https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg) center center /  21px 21px no-repeat' }}
+                  background: 'url(/images/shopping-cart-up-fill.svg) center center /  21px 21px no-repeat' }}
                 />
               }
               title="Sell"
               key="Sell"
-              dot
               selected={this.state.selectedTab === 'sellTab'}
               onPress={() => {
                 this.setState({
@@ -102,8 +99,8 @@ class MainApp extends Component {
               <SellTabContainer />
             </TabBar.Item>
             <TabBar.Item
-              icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-              selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
+              icon={{ uri: '/images/megaphone-1.svg' }}
+              selectedIcon={{ uri: '/images/megaphone-1-fill.svg' }}
               title="Advertise"
               key="Advertise"
               selected={this.state.selectedTab === 'advertiseTab'}
@@ -113,7 +110,7 @@ class MainApp extends Component {
                 });
               }}
             >
-              <AdvertiseTab />
+              <AdvertiseTabContainer />
             </TabBar.Item>
           </TabBar>
       </div>
