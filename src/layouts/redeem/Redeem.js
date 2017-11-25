@@ -7,6 +7,7 @@ import contract from 'truffle-contract'
 import InfinitePointsContract from '../../../build/contracts/InfinitePoints.json'
 
 import { NavBar, WingBlank, Icon, WhiteSpace, Card, Button, List, Modal } from 'antd-mobile'
+import { merchant1 } from '../../constants'
 
 class Redeem extends Component {
   constructor(props) {
@@ -105,11 +106,11 @@ function redeemPoints(points) {
   if (typeof web3 !== 'undefined') {
     return (async (dispatch, getState) => {
       try {
+        const { user: { data: { coinbase } } } = getState()
         const infiniteContract = contract(InfinitePointsContract)
         infiniteContract.setProvider(web3.currentProvider)
         const contractInstance = await infiniteContract.deployed()
-        const accounts = web3.eth.accounts
-        await contractInstance.subPoints(accounts[1], points, { from: accounts[2] })
+        await contractInstance.subPoints(coinbase, points, { from: merchant1 })
         
         browserHistory.goBack()
       } catch (err) {

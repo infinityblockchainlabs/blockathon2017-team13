@@ -44,8 +44,7 @@ function purchaseItem() {
         const infiniteContract = contract(InfinitePointsContract)
         infiniteContract.setProvider(web3.currentProvider)
         const contractInstance = await infiniteContract.deployed()
-        const accounts = web3.eth.accounts
-        await contractInstance.addPoints(accounts[1], 3000, { from: accounts[2] })
+        await contractInstance.addPoints(user1, 3000, { from: merchant1 })
       } catch (err) {
         console.error(err)
       }
