@@ -14,11 +14,12 @@ import Login from './layouts/login/Login'
 import MainApp from './layouts/MainApp'
 
 // Merchant Web Demo
-import MerchanDemo from './merchant/MerchantDemo'
+import MerchantDemo from './merchant/MerchantDemo'
 import UserProfile from './merchant/UserProfile'
 import ProductList from './merchant/ProductList'
 import ProductDetails from './merchant/ProductDetails'
 import PurchasedSuccess from './merchant/PurchasedSuccess'
+import Cart from './merchant/Cart'
 
 // Redux Store
 import store from './store'
@@ -44,11 +45,12 @@ ReactDOM.render((
           <Route path="login" component={UserIsNotAuthenticated(Login)} />
           <Route path="app" component={UserIsAuthenticated(MainApp)} />
         </Route>
-        <Route path="/merchant" component={MerchanDemo}>
+        <Route path="/merchant" component={MerchantDemo}>
           <IndexRoute component={ProductList} />
           <Route path="user_profile" component={UserProfile} />
           <Route path="product" component={ProductDetails} />
           <Route path="purchased" component={PurchasedSuccess} />
+          <Route path="cart" component={Cart} />
         </Route>
       </Router>
     </Provider>
